@@ -34,3 +34,9 @@ clc
 % subplot(1, 3, 3)
 % imshow(hm_img)
 
+%2e
+[orig, clahe] = myCLAHE('../data/church.png', 0.5, 20);
+subplot(1, 2, 1)
+imshow(orig)
+subplot(1, 2, 2)
+imshow(clahe)
