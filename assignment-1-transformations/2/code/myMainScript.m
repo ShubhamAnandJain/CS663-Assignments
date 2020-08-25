@@ -12,11 +12,11 @@ clc
 % imshow(foreground)
 
 %2b
-[original, new] = myLinearContrastStretching('../data/retina.png');
-subplot(1, 2, 1)
-imagesc(original)
-subplot(1, 2, 2)
-imagesc(new)
+% [original, new] = myLinearContrastStretching('../data/retina.png');
+% subplot(1, 2, 1)
+% imagesc(original)
+% subplot(1, 2, 2)
+% imagesc(new)
 
 %2c
 % [orig, new] = myHE('../data/church.png');
@@ -35,8 +35,8 @@ imagesc(new)
 % imshow(hm_img)
 
 %2e
-% [orig, clahe] = myCLAHE('../data/church.png', 0.5, 20);
-% subplot(1, 2, 1)
-% imshow(orig)
-% subplot(1, 2, 2)
-% imshow(clahe)
+[orig, clahe] = myCLAHE('../data/church.png', 5);
+subplot(1, 2, 1)
+imshow(orig)
+subplot(1, 2, 2)
+imshow(clahe)

@@ -14,7 +14,7 @@ function [img, new_img] = myLinearContrastStretching(path)
         [~, min_idx]=min(abs(cdf-cdf_min));
         [~, max_idx]=min(abs(cdf-cdf_max));        
         
-        linear = (img(:,:,channel)-min_idx-1)./(max_idx - min_idx);
+        linear = (img(:,:,channel)-min_idx-1)/(max_idx - min_idx);
         linear (linear < 0) = 0;
         linear (linear > 1) = 1;
         new_img(:,:,channel) = linear;        

@@ -1,4 +1,4 @@
-function [orig_img, clahe_img] = myCLAHE(pth, one_sided_window)
+function [orig_img, clahe_img] = myCLAHE(pth, threshold, one_side_window)
 %     threshold = 0.2;
 %     one_side_window = 2; % half of the total window
 %     pth = '../data/statue.png';
@@ -13,22 +13,17 @@ function [orig_img, clahe_img] = myCLAHE(pth, one_sided_window)
         cur_channel = orig_img(:,:,channel);
         % https://in.mathworks.com/help/images/ref/padarray.html
         % pad corners with 256 so that they can be removed later
-        cur_channel_pad = padarray(cur_channel,[one_sided_window, one_sided_window],256,'both');
-        final = nlfilter(cur_channel_pad, [2*one_sided_window+1,2*one_sided_window+1], @perChunk);
-        % crop
-        final = final(one_sided_window+1:one_sided_window+num_rows, one_sided_window+1:one_sided_window+num_cols);
+        cur_channel_pad = padarray(cur_channel,[one_side_window, one_side_window],256,'both');
+        final = nlfilter(cur_channel_pad, [2*one_sided_window+1,2*one_sided_window+1], perChunk);
+        final = 
         clahe_img(:,:,channel) = final;
     end            
 %         plot(1:256, pdf);
 %         hold on
 end
 
-function [clahe] = perChunk(inp_chunk)
-    midpt_x = uint8((size(inp_chunk, 1) - 1)/2);
-    midpt_y = uint8((size(inp_chunk, 2) - 1)/2);
-    threshold = 0.1;
-    edges = -0.5:1:256.5;
-    counts = histcounts(inp_chunk, edges); % ~ means ignore
+function clahe = perChunk(threshold, chunk)
+    [counts, ~] = histcounts(chunk, 257); % ~ means ignore
     % remove padded 256s which are present in the 257th bin
     counts = counts(1:256);
     % pdf
@@ -41,7 +36,7 @@ function [clahe] = perChunk(inp_chunk)
     % calculate cdf
     cdf = cumsum(pdf)/sum(pdf);
     % HE
-    clahe = cdf(inp_chunk(midpt_x, midpt_y)+1);    
+    clahe = cdf(chunk+1);    
 end
 
 % function [orig_img, clahe_img] = myCLAHE(pth, threshold, one_side_window)
