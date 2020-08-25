@@ -1,16 +1,20 @@
-function y = myBilinearInterpolation(bar)
-dim = size(bar);
-length =dim(1,1);
+function y = myBilinearInterpolation(input_image, phi_x, phi_y)
 
-%[Xi,Yi]=meshgrid(1:1:length);
-%xres = linspace(1,length,2*length+1);
-%yres = linspace(1,length,3*length+1);
-%[Xq,Yq] =meshgrid(xres,yres);
-%y = interp2(Xi,Yi,bar,Xq,Yq);
+[rows_in, cols_in] = size(input_image);
 
-temp=zeros(3*length-2,2*length-1);
-temp(1:3:end,1:2:end)=bar(1:1:end,1:1:end);
-temp(1:3:end,2:2:end)=(temp(1:3:end,1:2:end-1)+temp(1:3:end,3:2:end))./2;
-temp(2:3:end,1:1:end)=(2.*temp(1:3:end-1,1:1:end)+temp(4:3:end,1:1:end))./3;
-temp(3:3:end,1:1:end)=(temp(1:3:end-1,1:1:end)+2.*temp(4:3:end,1:1:end))./3;
-y=temp;
+x_vals = floor(phi_x);
+y_vals = floor(phi_y);
+
+x_vals = max(1, min(rows_in-1, x_vals));
+y_vals = max(1, min(cols_in-1, y_vals));
+
+diff_x = phi_x - x_vals;
+diff_y = phi_y - y_vals;
+
+Grid00 = sub2ind([rows_in, cols_in], x_vals, y_vals);
+Grid01 = sub2ind([rows_in, cols_in], x_vals, y_vals+1);
+Grid10 = sub2ind([rows_in, cols_in], x_vals+1, y_vals);
+Grid11 = sub2ind([rows_in, cols_in], x_vals+1, y_vals+1);
+
+y = diff_x .* diff_y .* input_image(Grid11) + diff_x .* (1-diff_y) .* input_image(Grid10) ...
++ (1-diff_x) .* diff_y .* input_image(Grid01) + (1-diff_x) .* (1-diff_y) .* input_image(Grid00);

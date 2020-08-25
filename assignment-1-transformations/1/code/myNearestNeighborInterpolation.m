@@ -1,11 +1,12 @@
-function y = myNearestNeighborInterpolation(bar)
-dim = size(bar);
-length =dim(1,1);
+function y = myNearestNeighborInterpolation(input_image, phi_x, phi_y)
 
-temp=zeros(3*length-2,2*length-1);
-temp(1:3:end,1:2:end)=bar(1:1:end,1:1:end);
-temp(1:3:end,2:2:end)=bar(1:1:end,1:1:end-1);
-temp(2:3:end,1:1:end)=temp(1:3:end-1,1:1:end);
-temp(3:3:end,1:1:end)=temp(4:3:end,1:1:end);
-temp=uint8(temp);
-y=temp;
+[rows_in, cols_in] = size(input_image);
+
+x_vals = floor(phi_x);
+y_vals = floor(phi_y);
+
+x_vals = max(1, min(rows_in, x_vals));
+y_vals = max(1, min(cols_in, y_vals));
+
+GridVals = sub2ind([rows_in, cols_in], x_vals, y_vals);
+y = input_image(GridVals);
