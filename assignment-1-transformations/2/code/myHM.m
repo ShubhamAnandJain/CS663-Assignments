@@ -41,5 +41,7 @@ function [ref_img, input_img, hm_img] = myHM(ref_pth, input_pth)
         % index using CDF values
         temp = uint8(255*input_cdf(input_img(:,:,channel)+1)); % 1 due to indexing from 1       
         hm_img(:, :, channel) = inverse_ref_cdf(temp+1)/255;
-    end   
+    end
+    ref_img = double(ref_img)/255;
+    input_img = double(input_img)/255;
 end

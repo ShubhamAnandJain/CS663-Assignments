@@ -26,7 +26,7 @@ end
 function [clahe] = perChunk(inp_chunk)
     midpt_x = uint8((size(inp_chunk, 1) - 1)/2);
     midpt_y = uint8((size(inp_chunk, 2) - 1)/2);
-    threshold = 0.3;
+    threshold = 0.1;
     edges = -0.5:1:256.5;
     counts = histcounts(inp_chunk, edges); % ~ means ignore
     % remove padded 256s which are present in the 257th bin
