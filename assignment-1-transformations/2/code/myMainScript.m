@@ -96,9 +96,9 @@ filenames = {'../data/barbara.png', '../data/TEM.png', '../data/canyon.png', '..
 nums = [1 2 3 6];
 for eg = 1:length(filenames)
     pth = filenames{eg};
-    for one_sided_window_size = [2, 10, 20]
+    for one_sided_window_size = [5, 20, 40]
         window_size = 2*one_sided_window_size+1;
-        save_name = strcat('../results/e_', string(window_size), '_point1_', string(nums(eg)));
+        save_name = strcat('../results/e_', string(nums(eg)), '_', string(window_size), '_point2');
         [original, new] = myCLAHE(pth, one_sided_window_size);
         f = figure('visible', 'off');
         axis tight;
@@ -107,9 +107,9 @@ for eg = 1:length(filenames)
         daspect ([1 1 1]);
         colorbar;
         subplot(1,2,2), imagesc(new);
-        t = strcat('CLAHE with N=', string(window_size), 'and t=0.1');
+        t = strcat('CLAHE with N = ', string(window_size), ' and t = 0.2');
         title(t)
-        daspect ([1 1 1]);       
+        daspect ([1 1 1]);     
         colorbar;    
         saveas(f, save_name, 'png');
     end
