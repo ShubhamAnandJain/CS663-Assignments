@@ -7,7 +7,7 @@ filenames = {'../data/barbara.png', '../data/TEM.png', '../data/canyon.png', '..
 nums = [1 2 3 5 6 7];
 
 %% Q2 a
-[image, mask, foreground] = myForegroundMask('../data/statue.png', 30);
+[image, mask, foreground] = myForegroundMask('../data/statue.png', 13);
 f = figure('visible', 'on');
 subplot(1,3,1), imagesc(image);
 title('original image');
@@ -58,16 +58,16 @@ for eg = 1:length(filenames)
     daspect ([1 1 1]);       
     colorbar;
     
-    % saveas(f, save_name, 'png');
+%     saveas(f, save_name, 'png');
 end
 
 %%
-% Contrast stretching is not effective in image 5 because it contains both
-% very high-intensity pixels (close to 255) and very dark pixels (close to
+% Contrast stretching is not effective in image 5 because it contains  many of 
+% both very high-intensity pixels (close to 255) and very dark pixels (close to
 % 0).
 %
 % As a result, $m_1 \approx 0$ and $m_2 \approx 255$, which results in a linear
-% function which is close to the identity mapping.
+% function equivalent to the identity mapping.
 
 %% Q2 c
 for eg = 1:length(filenames)
@@ -114,7 +114,7 @@ hold off
 
 %% Q2 d
 clf
-[ref_img, input_img, hm_img] = myHM('../data/retina.png', '../data/retinaRef.png');
+[ref_img, input_img, hm_img] = myHM('../data/retinaRef.png', '../data/retina.png');
 f = figure('visible', 'on');
 subplot(1,3,1), imagesc(ref_img);
 title('reference image');
