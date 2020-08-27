@@ -1,4 +1,4 @@
-%% Q3
+
 clear
 clc
 tic;
@@ -36,21 +36,48 @@ tic;
 % median of it's distribution; hence, every point can satisfy such a
 % property.
 %% Q3c
-% Explain why 3d works
+% We believe such a method (as described in part b) holds promise on
+% underexposed or over exposed images. Such images contain a peak in their
+% histogram at an extrema (very low or very high intensity).\\ When
+% conventional histogram equalization is applied, contrast is lost in such
+% an image. For example if conventional histogram equalisation were applied
+% to an under exposed image dark shades would get mapped to a brighter one.
+% On the other hand if a median based piece wise equalisation is performed
+% we can ensure that a dark tone can only be remapped to another value
+% locally. This improves the contrast of the image, as can be observed in
+% part d.
 %% Q3d
+% As can be observed below, conventional histogram equalisation maps black
+% values to grey which is an undesirable manipulation of the image, whereas
+% piece wise histogram equalization manages to bring out similar detail 
+% among higher intensity pixels without ruining contrast. 
 [orig, new] = myIntensitytxm('../data/underexposedimage.jpg');
 [orig1, new1] = myHE('../data/underexposedimage.jpg');
-subplot(3,2,1)
-imshow(orig)
-subplot(3,2,2)
-plot(imhist(orig))
-subplot(3,2,3)
-imshow(new)
-subplot(3,2,4)
-plot(imhist(new))
-subplot(3,2,5)
-imshow(new1)
-subplot(3,2,6)
-plot(imhist(new1))
 
+subplot(3,2,1),imagesc(orig);
+title('Original Image');
+colorbar;
+subplot(3,2,2);
+plot(imhist(orig));
+xlabel('Intensity');
+ylabel('No. of pixels')
+title('Histogram');
+subplot(3,2,3),imagesc(new);
+title('Piecewise Histogram Equalised');
+colorbar;
+subplot(3,2,4);
+plot(imhist(new));
+xlabel('Intensity');
+ylabel('No. of pixels')
+title('Histogram');
+subplot(3,2,5),imagesc(new1);
+title('Histogram Equalised')
+colorbar;
+subplot(3,2,6);
+plot(imhist(new1));
+xlabel('Intensity');
+ylabel('No. of pixels')
+title('Histogram');
+axis tight;
+colormap gray;
 toc;
