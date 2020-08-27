@@ -8,7 +8,6 @@ function [orig_img, he_img] = myHE(pth)
         [counts, ~] = imhist(orig_img(:,:,channel)); % ~ means ignore    
         % calculate cdf
         cdf = cumsum(counts)/sum(counts);
-        % plot(cdf)    
         % index using CDF values
         he_img(:,:,channel) = cdf(orig_img(:,:,channel)+1);
     end

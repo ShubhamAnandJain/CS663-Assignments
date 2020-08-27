@@ -1,7 +1,34 @@
-function [orig_img, clahe_img] = myCLAHE(pth, one_sided_window)
+function [orig_img, clahe_img] = myCLAHE(pth, one_sided_window, threshold)
 %     one_sided_window = 2; % half of the total window
 %     pth = '../data/barbara.png';
-        
+    % actual CLAHE function
+    function [clahe] = perChunk(inp_chunk)
+        midpt_x = uint8((size(inp_chunk, 1) - 1)/2);
+        midpt_y = uint8((size(inp_chunk, 2) - 1)/2);
+        edges = -0.5:1:256.5;
+        counts = histcounts(inp_chunk, edges);
+        % remove padded 256s which are present in the 257th bin
+        counts = counts(1:256);
+        % pdf
+        pdf = double(counts)/sum(counts);
+    %     f = figure('visible', 'on');
+    %     plot(1:256, pdf, 'r--')
+    %     hold on
+        % calculate total mass above threshold
+        above_thresh = pdf > threshold;
+        total_excess_mass = sum((pdf - threshold).*above_thresh);
+        % clamp values
+        pdf(pdf > threshold) = threshold;
+        % redistribute it
+        pdf = pdf + total_excess_mass/256;
+    %     plot(1:256, pdf, 'b--')
+    %     saveas(f, 'eg', 'png');
+        % calculate cdf
+        cdf = cumsum(pdf)/sum(pdf);
+        % HE
+        clahe = cdf(inp_chunk(midpt_x, midpt_y)+1);    
+    end
+
     orig_img = imread(pth);
     num_rows = size(orig_img, 1);
     num_cols = size(orig_img, 2);
@@ -20,34 +47,6 @@ function [orig_img, clahe_img] = myCLAHE(pth, one_sided_window)
     end            
 %         plot(1:256, pdf);
 %         hold on
-end
-
-function [clahe] = perChunk(inp_chunk)
-    midpt_x = uint8((size(inp_chunk, 1) - 1)/2);
-    midpt_y = uint8((size(inp_chunk, 2) - 1)/2);
-    threshold = 0.2;
-    edges = -0.5:1:256.5;
-    counts = histcounts(inp_chunk, edges);
-    % remove padded 256s which are present in the 257th bin
-    counts = counts(1:256);
-    % pdf
-    pdf = double(counts)/sum(counts);
-%     f = figure('visible', 'on');
-%     plot(1:256, pdf, 'r--')
-%     hold on
-    % calculate total mass above threshold
-    above_thresh = pdf > threshold;
-    total_excess_mass = sum((pdf - threshold).*above_thresh);
-    % clamp values
-    pdf(pdf > threshold) = threshold;
-    % redistribute it
-    pdf = pdf + total_excess_mass/256;
-%     plot(1:256, pdf, 'b--')
-%     saveas(f, 'eg', 'png');
-    % calculate cdf
-    cdf = cumsum(pdf)/sum(pdf);
-    % HE
-    clahe = cdf(inp_chunk(midpt_x, midpt_y)+1);    
 end
 
 % function [orig_img, clahe_img] = myCLAHE(pth, threshold, one_side_window)
