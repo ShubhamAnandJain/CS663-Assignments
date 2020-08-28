@@ -11,9 +11,9 @@ function [img, new_img] = myLinearContrastStretching(path)
         cdf = cumsum(counts)/sum(counts);
 %         plot(1:256, cdf);
 %         hold on
-        [~, min_idx]=min(abs(cdf-cdf_min));
-        [~, max_idx]=min(abs(cdf-cdf_max));
-        linear = (double(img(:,:,channel))-min_idx-1)/(max_idx - min_idx);
+        min_idx = size(cdf(cdf<cdf_min),1);
+        max_idx = size(cdf(cdf<cdf_max),1);
+        linear = (double(img(:,:,channel))-1-min_idx)/(max_idx - min_idx);
         linear (linear < 0) = 0;
         linear (linear > 1) = 1;
         new_img(:,:,channel) = linear;        

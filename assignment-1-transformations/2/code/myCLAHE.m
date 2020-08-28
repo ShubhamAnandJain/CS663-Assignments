@@ -3,8 +3,8 @@ function [orig_img, clahe_img] = myCLAHE(pth, one_sided_window, threshold)
 %     pth = '../data/barbara.png';
     % actual CLAHE function
     function [clahe] = perChunk(inp_chunk)
-        midpt_x = uint8((size(inp_chunk, 1) - 1)/2);
-        midpt_y = uint8((size(inp_chunk, 2) - 1)/2);
+        midpt_x = uint8((size(inp_chunk, 1) + 1)/2);
+        midpt_y = uint8((size(inp_chunk, 2) + 1)/2);
         edges = -0.5:1:256.5;
         counts = histcounts(inp_chunk, edges);
         % remove padded 256s which are present in the 257th bin

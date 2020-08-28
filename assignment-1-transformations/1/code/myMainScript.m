@@ -1,12 +1,10 @@
-%% MyMainScript
-
-%needed for correct plotting of images
+%% Q1
 %keeping number of colours per intensity to be 200
 myNumOfColors = 200;
 myColorScale = [ [0:1/(myNumOfColors-1):1]' , ...
     [0:1/(myNumOfColors-1):1]' , [0:1/(myNumOfColors-1):1]' ];
 tic;
-%% Your code here
+%% Q1a
 circle_concentric_1 = imread('../data/circles_concentric.png');
 
 %shrink the image by different factors
@@ -16,18 +14,21 @@ circle_concentric_3 = myShrinkImageByFactorD(circle_concentric_1,3);
 %plot the images side-by-side
 subplot(1,3,1), imagesc(circle_concentric_1);
 daspect ([1 1 1]);
+title('Original Image');
 colorbar;
 subplot(1,3,2), imagesc(circle_concentric_2);
 daspect ([1 1 1]);
+title('Image with d = 2');
 colorbar;
 subplot(1,3,3), imagesc(circle_concentric_3);
 daspect ([1 1 1]);
+title('Image with d = 3');
 colorbar;
 axis tight;
 colormap (myColorScale);
 colormap gray;
 
-%% Part b
+%% Q1b
 bar = imread('../data/barbaraSmall.png');
 bar = double(bar)/255;
 [row_bar, col_bar] = size(bar);
@@ -47,41 +48,64 @@ biliterpbar = myBilinearInterpolation(bar, phi_x, phi_y);
 axis tight;
 colormap (myColorScale);
 colormap gray;
-subplot(1,2,1), imagesc(single(biliterpbar)); % phantom is a popular test image
-daspect ([103/307 103/205 1]);
-colorbar
-subplot(1,2,2), imagesc(single(bar));
+subplot(1,2,1), imagesc(single(bar));
 daspect ([1 1 1]);
 colorbar
+title('Original Image');
+subplot(1,2,2), imagesc(single(biliterpbar));
+daspect ([103/307 103/205 1]);
+title('Bilinear Interpolation');
+colorbar
 
-%% Part c
+%% Q1c
 NNiterpbar = myNearestNeighborInterpolation(bar, phi_x, phi_y);
 axis tight;
 colormap (myColorScale);
 colormap gray;
-subplot(1,2,1), imagesc(single(NNiterpbar)); % phantom is a popular test image
-daspect ([103/307 103/205 1]);
-colorbar
-subplot(1,2,2), imagesc(single(bar));
+subplot(1,2,1), imagesc(single(bar));
 daspect ([1 1 1]);
 colorbar
+title('Original Image');
+subplot(1,2,2), imagesc(single(NNiterpbar)); % phantom is a popular test image
+daspect ([103/307 103/205 1]);
+title('Nearest Neighbor Interpolation');
+colorbar
 
-%% Part d
+%% Q1d
 bicubic_iterp_bar = myBicubicInterpolation(bar, phi_x, phi_y);
 axis tight;
 colormap (myColorScale);
 colormap gray;
-subplot(1,2,1), imagesc(single(bicubic_iterp_bar)); % phantom is a popular test image
-daspect ([103/307 103/205 1]);
-colorbar
-subplot(1,2,2), imagesc(single(bar));
+subplot(1,2,1), imagesc(single(bar));
 daspect ([1 1 1]);
+title('Original Image');
 colorbar
-%% Part e
-%We just show Barbara's head, smoothed using different methods
-barbara_face = bar(1:50,54:103);
+subplot(1,2,2), imagesc(single(bicubic_iterp_bar)); % phantom is a popular test image
+daspect ([103/307 103/205 1]);
+title('Bicubic Interpolation');
+colorbar
+%% Q1e
+%%
+% We show Barbara's face, smoothed using different methods. We
+% observe from the results that bicubic and bilinear interpolation are
+% clearly much better than nearest neighbor interpolation. This is also
+% apparent from the resizing comparison in the previous subparts.
+% The differences between Bilinear and Bicubic are subtle in this image, but
+% bicubic stands out. This is more clearly seen on a grayscale image, which
+% are shown in the previous subparts. On Comparison, it is clear that
+% Bicubic interpolation performs better than Bilinear in practice.
+%
+% This follows the expected results from interpolation theory - Bicubic is a
+% 3rd degree polynomial approximation, thus it is able to capture more
+% information of the image and smoothen out the image better. Bilinear
+% interpolation is a linear approximation over the 2 dimensions. Nearest
+% Neighbor is a zero-th order approximation over it's surroundings, and thus
+% it performs significantly worse, while being the easiest to implement.
 
-[face_phi_y, face_phi_x] = meshgrid(1:100,1:100);
+%%
+barbara_face = bar(1:70,34:103);
+
+[face_phi_y, face_phi_x] = meshgrid(1:140,1:140);
 face_phi_x = (face_phi_x + 1) / 2;
 face_phi_y = (face_phi_y + 1) / 2;
 
@@ -91,20 +115,24 @@ barbara_face_bicubic = myBicubicInterpolation(barbara_face, face_phi_x, face_phi
 
 axis tight;
 colormap (myColorScale);
-colormap gray;
-subplot(1,4,1), imagesc(single(barbara_face)); % phantom is a popular test image
+colormap jet;
+subplot(2,2,1), imagesc(single(barbara_face)); % phantom is a popular test image
 daspect ([1 1 1]);
+title('Original Image');
 colorbar
-subplot(1,4,2), imagesc(single(barbara_face_NN));
+subplot(2,2,2), imagesc(single(barbara_face_NN));
 daspect ([1/2 1/2 1]);
+title('Nearest Neighbor');
 colorbar
-subplot(1,4,3), imagesc(single(barbara_face_bilinear));
+subplot(2,2,3), imagesc(single(barbara_face_bilinear));
 daspect ([1/2 1/2 1]);
+title('Bilinear');
 colorbar
-subplot(1,4,4), imagesc(single(barbara_face_bicubic));
+subplot(2,2,4), imagesc(single(barbara_face_bicubic));
 daspect ([1/2 1/2 1]);
+title('Bicubic');
 colorbar
-%% Part f
+%% Q1f
 padded_bar = zeros(140,140);
 padded_bar(20:122,20:122) = bar;
 final = myImageRotation(padded_bar, 30);
@@ -113,10 +141,9 @@ colormap (myColorScale);
 colormap gray;
 subplot(1,2,1), imagesc(bar);
 daspect ([1 1 1]);
+title('Original Image');
 colorbar
 subplot(1,2,2), imagesc(final);
 daspect ([1 1 1]);
+title('30 degree rotation');
 colorbar
-
-%% new section
-toc;

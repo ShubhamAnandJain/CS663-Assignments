@@ -31,16 +31,16 @@ function [ref_img, input_img, hm_img] = myHM(ref_pth, input_pth)
 %         hold on
 
         % plot cdf and inverse to check visually
-    %     plot(1:256, ref_cdf_uint8)
-    %     hold on
-    %     plot(1:256, inverse_ref_cdf)
-    %     hold off
+%         plot(1:256, ref_cdf_uint8)
+%         hold on
+%         plot(1:256, inverse_ref_cdf)
+%         hold off
 
         input_cdf = cumsum(input_counts)/sum(input_counts);
 
         % index using CDF values
         temp = uint8(255*input_cdf(input_img(:,:,channel)+1)); % 1 due to indexing from 1       
-        hm_img(:, :, channel) = inverse_ref_cdf(temp+1)/255;
+        hm_img(:, :, channel) = floor(inverse_ref_cdf(temp+1))/255;
     end
     ref_img = double(ref_img)/255;
     input_img = double(input_img)/255;
