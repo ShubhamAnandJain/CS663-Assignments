@@ -12,15 +12,7 @@
 % as imrotate to confirm the proper working of our codes as compared to the
 % standard MATLAB implementations.
 %
-% 3) We were referred to a github repository containing senior's codes to
-% understand how to vectorize implementations instead of using for loops
-% etc. However, this is just a logical understanding of the functions and our
-% code is quite different (we try to implement the logic given in reference
-% number 4 as far as possible). 
-% In specific, we learnt how to use sub2ind and meshgrid functions from
-% https://github.com/PrieureDeSion/digital-image-processing/blob/master/assignment1_GrayTrans/1/code/myBilinearInterpolation.m.
-%
-% 4) The following "Lectures on Image Processing" were helpful for us to understand
+% 3) The following "Lectures on Image Processing" were helpful for us to understand
 % a practical implementation of the various interpolation functions: 
 % https://ia802707.us.archive.org/23/items/Lectures_on_Image_Processing/EECE_4353_15_Resampling.pdf
 
