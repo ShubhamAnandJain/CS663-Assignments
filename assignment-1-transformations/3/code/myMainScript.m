@@ -38,7 +38,7 @@ tic;
 %% Q3c
 % We believe such a method (as described in part b) holds promise on
 % underexposed or over exposed images. Such images contain a peak in their
-% histogram at an extrema (very low or very high intensity).\\ When
+% histogram at an extrema (very low or very high intensity). When
 % conventional histogram equalization is applied, contrast is lost in such
 % an image. For example if conventional histogram equalisation were applied
 % to an under exposed image dark shades would get mapped to a brighter one.
