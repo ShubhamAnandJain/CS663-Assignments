@@ -3,7 +3,7 @@ clear
 clc
 myNumOfColors = 200;
 myColorScale = [ 0:1/(myNumOfColors-1):1 ; 0:1/(myNumOfColors-1):1 ; 0:1/(myNumOfColors-1):1 ];
-filenames = {'../data/barbara.png', '../data/TEM.png', '../data/canyon.png', '../data/church.png', '../data/chestXray.png', '../results/a_foreground.png'};
+filenames = {'../data/barbara.png', '../data/TEM.png', '../data/canyon.png', '../data/church.png', '../data/chestXray.png', '../images/a_foreground.png'};
 nums = [1 2 3 5 6 7];
 image_counter = 1;
 
@@ -27,9 +27,9 @@ daspect ([1 1 1]);
 colorbar;
 axis tight;
 colormap gray;
-% saveas(f,'../results/a_all','png')
 % saving only foreground
-imwrite(foreground, '../results/a_foreground.png')
+imwrite(foreground, '../images/a_foreground.png')
+save('../images/a_foreground.mat', 'foreground');
 
 
 %% Q2 b
@@ -43,7 +43,6 @@ imwrite(foreground, '../results/a_foreground.png')
 %
 % Values below $m_1$ and above $m_2$ are mapped to 0 and 255 respectively.
 
-clf
 for eg = 1:length(filenames)
     pth = filenames{eg};
     save_name = strcat('../results/b_', string(nums(eg)));
@@ -64,6 +63,13 @@ for eg = 1:length(filenames)
 end
 
 %%
+% References:
+% 
+% * Colormap: https://www.mathworks.com/help/matlab/ref/gray.html
+% * imhist function: https://in.mathworks.com/help/images/ref/imhist.html
+% * Calculation of CDF: https://in.mathworks.com/help/matlab/ref/cumsum.html
+
+%%
 % Contrast stretching is not effective in image 5 because it contains many 
 % high-intensity pixels (close to 255) and many dark pixels (close to 0).
 %
@@ -71,7 +77,7 @@ end
 % function equivalent to the identity mapping.
 
 %% Q2 c
-clf
+
 for eg = 1:length(filenames)
     pth = filenames{eg};
     save_name = strcat('../results/c_', string(nums(eg)));
@@ -121,7 +127,6 @@ title('PDF')
 hold off
 
 %% Q2 d
-clf
 [ref_img, input_img, hm_img] = myHM('../data/retinaRef.png', '../data/retina.png');
 f = figure('visible', 'on');
 subplot(1,3,1), imagesc(ref_img);
@@ -141,9 +146,16 @@ axis tight;
 %
 % However, on applying the algorithm to each channel separately, the bright
 % spot on the left becomes even brighter and we lose information.
+%
+% References:
+%
+% * Filling missing values while calculating inverse: https://in.mathworks.com/help/matlab/ref/fillmissing.html
 
 %% Q2 e
+tic
 %%
+% This part of the code takes more than 5 minutes
+%
 % We carry out CLAHE with a window size of 11, 41, 81 as all 3 give
 % signifciantly distinct outputs.
 %
@@ -151,14 +163,16 @@ axis tight;
 % outputs too!
 filenames = {'../data/barbara.png', '../data/TEM.png', '../data/canyon.png', '../data/chestXray.png'};
 nums = [1 2 3 6];
+thresholds = [0.05, 0.1];
+threshold_names = {'point_zerofive.mat', 'point_one.mat'};
 for eg = 1:length(filenames)
     pth = filenames{eg};
     for one_sided_window_size = [5, 20, 40]
-        for threshold = [0.05, 0.1]
+        for thresh_case = 1:length(threshold_names)
+            threshold = thresholds(thresh_case);
             window_size = 2*one_sided_window_size+1;            
-%             save_name = strcat('../results/e_', string(nums(eg)), '_', string(window_size), '_point', string(threshold*10));
+            save_name = strcat('../images/e_', string(nums(eg)), '_', string(window_size), '_', threshold_names{thresh_case});
             [original, new] = myCLAHE(pth, one_sided_window_size, threshold);
-            clf
             f = figure('visible', 'on');
             axis tight;
             subplot(1,2,1), imagesc(original);
@@ -168,13 +182,19 @@ for eg = 1:length(filenames)
             t = strcat('CLAHE with N = ', string(window_size), ' and t = ', string(threshold));
             title(t)
             daspect ([1 1 1]);
-            % saveas(f, save_name, 'png');
+            save(save_name, 'original', 'new');
         end
     end
 end
+toc
 %%
 % We can observe that on increasing the window size, the noise decreases
 % but at the cost of decrease in the local contrast
 %
 % On the other hand, a higher threshold leads to higher noise while a lower
 % threshold leads to a smoother image
+%
+% References:
+%
+% * nlfilt uses a sliding window approach to efficiently calculate a scalar value for centre pixel: https://in.mathworks.com/help/images/ref/nlfilter.html
+% * Nested function: https://in.mathworks.com/help/matlab/matlab_prog/nested-functions.html?s_tid=srchtitle
