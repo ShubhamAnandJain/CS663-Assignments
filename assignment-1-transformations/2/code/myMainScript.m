@@ -5,6 +5,7 @@ myNumOfColors = 200;
 myColorScale = [ 0:1/(myNumOfColors-1):1 ; 0:1/(myNumOfColors-1):1 ; 0:1/(myNumOfColors-1):1 ];
 filenames = {'../data/barbara.png', '../data/TEM.png', '../data/canyon.png', '../data/church.png', '../data/chestXray.png', '../results/a_foreground.png'};
 nums = [1 2 3 5 6 7];
+image_counter = 1;
 
 %% Q2 a
 %%
@@ -171,4 +172,9 @@ for eg = 1:length(filenames)
         end
     end
 end
-
+%%
+% We can observe that on increasing the window size, the noise decreases
+% but at the cost of decrease in the local contrast
+%
+% On the other hand, a higher threshold leads to higher noise while a lower
+% threshold leads to a smoother image

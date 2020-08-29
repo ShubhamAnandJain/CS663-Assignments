@@ -5,10 +5,11 @@ myNumOfColors = 200;
 myColorScale = [ 0:1/(myNumOfColors-1):1 ; 0:1/(myNumOfColors-1):1 ; 0:1/(myNumOfColors-1):1 ];
 filenames = {'../data/barbara.png', '../data/TEM.png', '../data/canyon.png', '../data/church.png', '../data/chestXray.png', '../results/a_foreground.png'};
 nums = [1 2 3 5 6 7];
+image_counter = 1;
 
 %% Q2 a
 %%
-% By tring out a few values, we finalised a threshold of 13 for preserving
+% By trying out a few values, we finalised a threshold of 13 for preserving
 % the hands and the statue.
 [image, mask, foreground] = myForegroundMask('../data/statue.png', 13);
 f = figure('visible', 'on');
@@ -103,6 +104,9 @@ end
 %
 % In case of image 5, it is helpful because there are 2 peaks - at very
 % dark pixels (~0) and very bright pixels (~255).
+%
+% This can be verified by looking at the PDF of the 3 independent channels
+% which is given below:
 clf
 orig_img = imread('../data/church.png');
 for channel = 1:size(orig_img, 3)
@@ -139,26 +143,22 @@ axis tight;
 % spot on the left becomes even brighter and we lose information.
 
 %% Q2 e
-clf
+%%
+% We carry out CLAHE with a window size of 11, 41, 81 as all 3 give
+% signifciantly distinct outputs.
+%
+% The thresholds chosen are 0.1 and 0.05 since they exhibit different
+% outputs too!
 filenames = {'../data/barbara.png', '../data/TEM.png', '../data/canyon.png', '../data/chestXray.png'};
 nums = [1 2 3 6];
 for eg = 1:length(filenames)
     pth = filenames{eg};
-    [original, new] = myCLAHE(pth, 20, 0.1);
-    f = figure('visible', 'on');
-    axis tight;
-    subplot(1,2,1), imagesc(original);
-    title('original image')
-    daspect ([1 1 1]);
-    subplot(1,2,2), imagesc(new);
-    t = strcat('CLAHE with N = 20, t = 0.1');
-    title(t)
-    daspect ([1 1 1]);
-    for one_sided_window_size = [5, 40]
-
+    for one_sided_window_size = [5, 20, 40]
+        for threshold = [0.05, 0.1]
             window_size = 2*one_sided_window_size+1;            
 %             save_name = strcat('../results/e_', string(nums(eg)), '_', string(window_size), '_point', string(threshold*10));
             [original, new] = myCLAHE(pth, one_sided_window_size, threshold);
+            clf
             f = figure('visible', 'on');
             axis tight;
             subplot(1,2,1), imagesc(original);
@@ -172,4 +172,8 @@ for eg = 1:length(filenames)
         end
     end
 end
-
+%%
+% We can observe that on increasing the window size, the noise decreases
+% but at the cost of decrease in the local contrast
+%
+% On the other hand, a higher threshold 
