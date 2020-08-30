@@ -45,8 +45,7 @@ function [orig_img, clahe_img] = myCLAHE(pth, one_sided_window, threshold)
         final = final(one_sided_window+1:one_sided_window+num_rows, one_sided_window+1:one_sided_window+num_cols);
         clahe_img(:,:,channel) = final;
     end            
-%         plot(1:256, pdf);
-%         hold on
+    orig_img = double(orig_img)/255;
 end
 
 % function [orig_img, clahe_img] = myCLAHE(pth, threshold, one_side_window)

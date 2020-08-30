@@ -18,6 +18,7 @@ function [img, new_img] = myLinearContrastStretching(path)
         linear (linear > 1) = 1;
         new_img(:,:,channel) = linear;        
     end
+    img = double(img)/255;
     
 end
 

@@ -2,7 +2,8 @@
 clear
 clc
 myNumOfColors = 200;
-myColorScale = [ 0:1/(myNumOfColors-1):1 ; 0:1/(myNumOfColors-1):1 ; 0:1/(myNumOfColors-1):1 ];
+myColorScale = [ [0:1/(myNumOfColors-1):1]' , ...
+    [0:1/(myNumOfColors-1):1]' , [0:1/(myNumOfColors-1):1]' ];
 filenames = {'../data/barbara.png', '../data/TEM.png', '../data/canyon.png', '../data/church.png', '../data/chestXray.png', '../images/a_foreground.png'};
 nums = [1 2 3 5 6 7];
 image_counter = 1;
@@ -13,6 +14,7 @@ image_counter = 1;
 % the hands and the statue.
 [image, mask, foreground] = myForegroundMask('../data/statue.png', 13);
 f = figure('visible', 'on');
+colormap gray;
 subplot(1,3,1), imagesc(image);
 title('original image');
 daspect ([1 1 1]);
@@ -26,7 +28,6 @@ title('foreground image');
 daspect ([1 1 1]);
 colorbar;
 axis tight;
-colormap gray;
 % saving only foreground
 imwrite(foreground, '../images/a_foreground.png')
 save('../images/a_foreground.mat', 'foreground');
@@ -47,18 +48,26 @@ for eg = 1:length(filenames)
     pth = filenames{eg};
     save_name = strcat('../results/b_', string(nums(eg)));
     [original, new] = myLinearContrastStretching(pth);
-    f = figure('visible', 'on');
-    if eg == 6
-        colormap gray
-        colorbar;
-    end
+    f = figure('visible', 'on');    
     axis tight;
     subplot(1,2,1), imagesc(original);
     title('original image');
     daspect ([1 1 1]);
+    if eg == 3 || eg == 4
+        colormap(myColorScale)
+    else
+        colormap gray
+        colorbar
+    end
     subplot(1,2,2), imagesc(new);
     title('after linear contrast');
-    daspect ([1 1 1]);              
+    daspect ([1 1 1]);
+    if eg == 3 || eg == 4
+        colormap(myColorScale)
+    else
+        colormap gray
+        colorbar
+    end
 %     saveas(f, save_name, 'png');
 end
 
@@ -87,14 +96,18 @@ for eg = 1:length(filenames)
     subplot(1,2,1), imagesc(original);
     title('original image')
     daspect ([1 1 1]);
-    if eg == 6
+    if eg == 3 || eg == 4
+        colormap(myColorScale)
+    else
         colormap gray
         colorbar
     end
     subplot(1,2,2), imagesc(new);
     title('histogram-equalised image')
     daspect ([1 1 1]);
-    if eg == 6
+    if eg == 3 || eg == 4
+        colormap(myColorScale)
+    else
         colormap gray
         colorbar
     end
@@ -132,12 +145,15 @@ f = figure('visible', 'on');
 subplot(1,3,1), imagesc(ref_img);
 title('reference image');
 daspect ([1 1 1]);
+colormap(myColorScale)
 subplot(1,3,2), imagesc(input_img);
 title('input image');
 daspect ([1 1 1]);
+colormap(myColorScale)
 subplot(1,3,3), imagesc(hm_img);
 title('histogram-matched image');
 daspect ([1 1 1]);
+colormap(myColorScale)
 axis tight;
 % saveas(f, '../results/d', 'png');
 
@@ -178,10 +194,22 @@ for eg = 1:length(filenames)
             subplot(1,2,1), imagesc(original);
             title('original image')
             daspect ([1 1 1]);
+            if eg == 3
+                colormap(myColorScale)
+            else
+                colormap gray
+                colorbar
+            end
             subplot(1,2,2), imagesc(new);
             t = strcat('CLAHE with N = ', string(window_size), ' and t = ', string(threshold));
             title(t)
             daspect ([1 1 1]);
+            if eg == 3
+                colormap(myColorScale)
+            else
+                colormap gray
+                colorbar
+            end
             save(save_name, 'original', 'new');
         end
     end
