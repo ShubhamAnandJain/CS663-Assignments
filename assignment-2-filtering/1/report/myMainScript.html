@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>myMainScript</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-09-21"><meta name="DC.source" content="myMainScript.m"><style type="text/css">
+      --><title>myMainScript</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-09-25"><meta name="DC.source" content="myMainScript.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Q1: Image Sharpening using Unsharp Masking</a></li><li><a href="#3">Image 1</a></li><li><a href="#6">Image 2</a></li></ul></div><h2 id="1">Q1: Image Sharpening using Unsharp Masking</h2><div><ol><li>F*G (F convolved with G) gives a low-pass version of the image.</li><li>Subtracting this low-pass version of F from F i.e. F - F*G can be considered as the high-pass version of F since the low-pass components have been subtracted.</li><li>Adding a scaled version of this high-pass version i.e. F + s(F - F*G) enhances the edges since they can be considered as the high-pass components of an image. s is a scaling factor which needs to be tuned.</li></ol></div><h2 id="3">Image 1</h2><div><ul><li>Standard deviation of Gaussian: 3</li><li>Scaling factor: 0.6</li></ul></div><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <h2 id="6">Image 2</h2><div><ul><li>Standard deviation of Gaussian: 6</li><li>Scaling factor: 0.2</li></ul></div><img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Q1: Image Sharpening using Unsharp Masking</a></li><li><a href="#3">Image 1</a></li><li><a href="#7">Image 2</a></li></ul></div><h2 id="1">Q1: Image Sharpening using Unsharp Masking</h2><div><ol><li>F*G (F convolved with G) gives a low-pass version of the image.</li><li>Subtracting this low-pass version of F from F i.e. F - F*G can be considered as the high-pass version of F since the low-pass components have been subtracted.</li><li>Adding a scaled version of this high-pass version i.e. F + s(F - F*G) enhances the edges since they can be considered as the high-pass components of an image. s is a scaling factor which needs to be tuned.</li></ol></div><h2 id="3">Image 1</h2><div><ul><li>Standard deviation of Gaussian: 3</li><li>Scaling factor: 0.6</li></ul></div><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <p>Most of the percpetible change can be seen in the mane of the lion.</p><h2 id="7">Image 2</h2><div><ul><li>Standard deviation of Gaussian: 6</li><li>Scaling factor: 0.2</li></ul></div><img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Q1: Image Sharpening using Unsharp Masking
 
@@ -91,9 +91,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 clc
 imstruct = load('../data/lionCrop.mat');
 im = imstruct.imageOrig;
-filter_len = 25;
-sigma = 3;
-scaling = 0.6;
+sigma = 5;
+filter_len = 4*sigma;
+scaling = 0.9;
 [orig, sharp, mask] = myUnsharpMasking(im, filter_len, sigma, scaling);
 f = figure('visible', 'on');
 subplot(1, 2, 1)
@@ -107,7 +107,8 @@ f = figure('visible', 'on');
 subplot(1, 1, 1)
 imshow(mat2gray(imresize(mask, 0.5)))
 title("High-pass version which is added");
-
+%%
+% Most of the percpetible change can be seen in the mane of the lion.
 %% Image 2
 
 % Parameters:
