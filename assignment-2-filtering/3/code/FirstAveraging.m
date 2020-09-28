@@ -10,11 +10,11 @@ for i = 1:9
         gauss_normal = gauss_normal + to_add;
     end
 end
-for i = 1:9
-    for j = 1:9
-        gaussian_patch(i,j) = gaussian_patch(i,j) / gauss_normal;
-    end
-end
+
+gaussian_patch = gaussian_patch / gauss_normal;
+
+% input_image
+% gaussian_patch
 
 centerX = floor((size(input_image,1)+1)/2);
 centerY = floor((size(input_image,2)+1)/2);
@@ -29,13 +29,17 @@ for i = centerX-12:centerX+12
         currPatch = input_image(i-4:i+4, j-4:j+4);
         patchDifference = (centerPatch-currPatch).^2;
         patchDifference = patchDifference .* gaussian_patch;
+        patchDifference = patchDifference / (9.0 * 9.0);
         totalSum = sum(patchDifference, 'all');
-        weightMat(13+centerX-i, 13+centerY-j) = exp(-totalSum/(h.^2));
+%         totalSum
+        weightMat(13+i-centerX, 13+j-centerY) = exp(-totalSum/(h^2));
     end
 end
 
 totalWeight = sum(weightMat, 'all');
 weightMat = weightMat ./ totalWeight;
+
+% weightMat
 
 intensityContribution = input_image(centerX-12:centerX+12, centerY-12:centerY+12) .* weightMat;
 y = sum(intensityContribution, 'all');
