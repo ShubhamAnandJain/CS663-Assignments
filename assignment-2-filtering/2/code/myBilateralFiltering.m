@@ -29,6 +29,4 @@ myfilterhandle = @bilatfilt;
 result = nlfilter(wi,[2*pad+1 2*pad+1], @(x) bilatfilt(x));
 y = result(pad+1:end-pad,pad+1:end-pad);
 % function to calculate each filtered pixel
-
-        
        

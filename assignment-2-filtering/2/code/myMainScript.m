@@ -5,7 +5,7 @@ tic;
 clc
 imstruct = load('../data/barbara.mat');
 im = imstruct.imageOrig;
-spread = range(im,'all');
+spread = max(im,[],'all') - min(im,[],'all');
 noise = (0.05*spread).*randn(size(im,1));
 ns = im + noise;
 cleaned = myBilateralFiltering(ns,1.4,10);
