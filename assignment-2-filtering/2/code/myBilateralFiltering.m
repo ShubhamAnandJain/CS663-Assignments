@@ -24,9 +24,9 @@ for i = 1:2*pad+1
         Gauss(i,j)=exp(((i-pad-1)^2+(j-pad-1)^2)*excoefsp)*densp;
     end
 end
-subplot(1, 1, 1)
-imshow(mat2gray(Gauss))
-title("Spatial Gaussian Kernel displayed as an image");
+%subplot(1, 1, 1)
+%imshow(mat2gray(Gauss))
+%title("Spatial Gaussian Kernel displayed as an image");
 myfilterhandle = @bilatfilt;
 result = nlfilter(wi,[2*pad+1 2*pad+1], @(x) bilatfilt(x));
 y = result(pad+1:end-pad,pad+1:end-pad);
