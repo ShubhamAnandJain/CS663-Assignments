@@ -8,6 +8,9 @@ tic;
 boat_im = load('../data/boat.mat');
 boat_im = double(cell2mat(struct2cell(boat_im)));
 
+boat_im = boat_im - min(min(boat_im));
+boat_im = boat_im / (1.0 * max(max(boat_im)));
+
 boat_im_blur = nlfilter(boat_im, [5,5], @(x) myGaussianBlurring(x, 5, 0.6));
 
 subplot(1,2,1), imagesc(boat_im);
@@ -24,7 +27,7 @@ colorbar;
 colormap (myColorScale);
 colormap gray;
 %%
-[partialX, partialY, grad_im, eigen_prim, eigen_second, cornerness_im] = myHarrisCornerDetector(boat_im_blur, 5, 0.3, 0.001);
+[partialX, partialY, grad_im, eigen_prim, eigen_second, cornerness_im] = myHarrisCornerDetector(boat_im_blur, 5, 0.3, 0.003);
 %%
 imagesc(partialX);
 daspect ([1 1 1]);
@@ -61,7 +64,8 @@ colorbar;
 colormap (myColorScale);
 colormap gray;
 %%
-imagesc(cornerness_im);
+cornerness_mask = double(cornerness_im > 0.0000009);
+imagesc(cornerness_mask);
 daspect ([1 1 1]);
 title('Harris Cornerness Measure');
 colorbar;
