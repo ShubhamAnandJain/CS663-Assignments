@@ -1,48 +1,51 @@
-%% MyMainScript
-
-tic;
-%% Your code here
-%sigmasp = 1;
-%densp=1/(sigmasp*sqrt(2*pi));
-%excoefsp= -1/(2*sigmasp^2);
-%pad = 2;
-%Gauss = zeros(2*pad+1,2*pad+1);
-%for i = 1:2*pad+1
-%    for j = 1:2*pad+1
-%        Gauss(i,j)=exp(((i-pad-1)^2+(j-pad-1)^2)*excoefsp)*densp;
-%    end
-%end
-%%
+%% Q2: Image Segmentation using Mean Shift.
+%% Image of a Baboon
+%  Gaussian kernel bandwidth for the color feature : 300
+%  Gaussian kernel bandwidth for the spatial feature : 100
+%  Number of Iterations : 20
 im = imread('../data/baboonColor.png');
-%im = imread('../data/bird.jpg');
-%smoothened = imfilter(im,Gauss,'conv');
 smoothened = imgaussfilt(im,1);
 subsamp = smoothened(1:2:end,1:2:end,:);
-
-subplot(1, 3, 1)
-imshow(im)
-subplot(1, 3, 2)
-imshow(smoothened)
-subplot(1,3,3)
-imshow(subsamp)
-%% Meanshift
 tic;
-mnshf = myMeanShiftSegmentation(double(subsamp),200,200,40,100,0.3);
+mnshf = myMeanShiftSegmentation(double(subsamp),100,300,20,200,0.3);
 subplot(1, 2, 1)
 imshow(im)
+title("Original Image");
 subplot(1, 2, 2)
 imshow(mnshf./255)
+title("Mean Shift Filtered Image");
 toc;
-%%
-subplot(1, 3, 1)
+%% Image of a bird
+%  Gaussian kernel bandwidth for the color feature : 200
+%  Gaussian kernel bandwidth for the spatial feature : 40
+%  Number of Iterations : 20
+im = imread('../data/bird.jpg');
+smoothened = imgaussfilt(im,1);
+subsamp = smoothened(1:4:end,1:4:end,:);
+tic;
+mnshf = myMeanShiftSegmentation(double(subsamp),40,200,20,200,0.3);
+subplot(1, 2, 1)
 imshow(im)
-subplot(1, 3, 2)
-imshow(mnshf)
-subplot(1,3,3)
-imshow(subsamp)
-%%
-%im = imread('../data/bird.jpg');
-%im = imread('../data/flower.jpg');
-disp(subsamp(1,1,:));
-%%
+title("Original Image");
+subplot(1, 2, 2)
+imshow(mnshf./255)
+title("Mean Shift Filtered Image");
 toc;
+%% Image of a Flower
+%  Gaussian kernel bandwidth for the color feature : 200
+%  Gaussian kernel bandwidth for the spatial feature : 200
+%  Number of Iterations : 20
+im = imread('../data/flower.jpg');
+smoothened = imgaussfilt(im,1);
+subsamp = smoothened(1:2:end,1:2:end,:);
+tic;
+mnshf = myMeanShiftSegmentation(double(subsamp),200,200,20,200,0.3);
+subplot(1, 2, 1)
+imshow(im)
+title("Original Image");
+subplot(1, 2, 2)
+imshow(mnshf./255)
+title("Mean Shift Filtered Image");
+toc;
+%%
+
