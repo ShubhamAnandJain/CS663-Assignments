@@ -21,15 +21,15 @@ function y = myMeanShiftSegmentation(im,sp_sig,col_sig,stopiter,numneighbour,lam
 %Continue
 
 %densp=1/(sp_sig*sqrt(2*pi));
-excoefsp= -1/(2*sp_sig^2);
+%excoefsp= -1/(2*sp_sig^2);
 %dencol=1/(col_sig*sqrt(2*pi));
-excoefcol= -1/(2*col_sig^2);
-[X,Y] = meshgrid(1:size(im,1),1:size(im,2));
+%excoefcol= -1/(2*col_sig^2);
+[row,col] = meshgrid(1:size(im,2),1:size(im,1));
 %featurespace = cat(3,X/sp_sig,Y/sp_sig,im(:,:,1)/col_sig,im(:,:,2)/col_sig,im(:,:,3)/col_sig);
 
 for i = 1:size(im,1)
     for j = 1:size(im,2)
-        featurespace((i-1)*size(im,2)+j,:)=[X(i,j)/sp_sig,Y(i,j)/sp_sig,im(i,j,1)/col_sig,im(i,j,2)/col_sig,im(i,j,3)/col_sig];
+        featurespace((i-1)*size(im,2)+j,:)=[row(i,j)/sp_sig,col(i,j)/sp_sig,im(i,j,1)/col_sig,im(i,j,2)/col_sig,im(i,j,3)/col_sig];
     end
 end
 a=1-lambda;

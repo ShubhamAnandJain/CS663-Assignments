@@ -27,11 +27,11 @@ subplot(1,3,3)
 imshow(subsamp)
 %% Meanshift
 tic;
-mnshf = myMeanShiftSegmentation(double(subsamp)./255,10,50,10,800,0.2);
+mnshf = myMeanShiftSegmentation(double(subsamp),200,200,40,100,0.3);
 subplot(1, 2, 1)
 imshow(im)
 subplot(1, 2, 2)
-imshow(mnshf)
+imshow(mnshf./255)
 toc;
 %%
 subplot(1, 3, 1)
