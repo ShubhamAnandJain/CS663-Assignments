@@ -1,4 +1,5 @@
 %% Q2: Image Segmentation using Mean Shift.
+
 %% Image of a Baboon
 %  Gaussian kernel bandwidth for the color feature : 300
 %  Gaussian kernel bandwidth for the spatial feature : 100
