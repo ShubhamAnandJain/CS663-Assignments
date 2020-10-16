@@ -67,14 +67,14 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Q3: Background blur</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#3">Image of a flower</a></li><li><a href="#4">Variation of r with distance from foreground</a></li><li><a href="#5">Final image after blurring</a></li><li><a href="#6">Image of a bird</a></li><li><a href="#7">Variation of r with distance from foreground</a></li><li><a href="#8">Final image after blurring</a></li></ul></div><p>The Algorithm:</p><div><ol><li>Apply Mean Shift Segmentation (use code from the previous part) and knnsearch (with k=2) to get 2 segments. Then use the built-in function <i>bwareafilt</i> to extract the largest contour. For both bird and the flower, the largest contour luckily turns out to be the actual foreground. In other cases, we will need manual intervention in this step. The foreground mask is stored in the <i>results/</i> directory for quickly running the code.</li><li>Use Canny Edge detection (built-in MATLAB function) to get the boundary of the foreground.</li><li>Initialise a matrix (Same size as that of image) with all alphas where (i,j) entry denotes the minimum distance of the pixel from the foreground mask. Then iterate over all the boundary pixels. For each boundary pixel, iterate over the radius from 1 to alpha and find all pixels (i,j) such that their distance from current boundary pixel is between r-1 and r. Set matrix(i,j) to min(matrix(i,j), r). Set radius for all pixels in the foreground to 0.</li><li>Now, for disc blurring, iterate over all pixels in the image. If radius = 0 (foreground), do nothing. Otherwise, use the built-in MATLAB function fspecial(r, 'disk') to construct the disc filter and apply it to the current point.</li></ol></div><h2 id="3">Image of a flower</h2><pre>For mean shift:
+  </style></head><body><div class="content"><h1>Q3: Background blur</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#3">Image of a flower</a></li><li><a href="#4">Variation of r with distance from foreground</a></li><li><a href="#15">Final image after blurring</a></li><li><a href="#16">Image of a bird</a></li><li><a href="#17">Variation of r with distance from foreground</a></li><li><a href="#28">Final image after blurring</a></li></ul></div><p>The Algorithm:</p><div><ol><li>Apply Mean Shift Segmentation (use code from the previous part) and knnsearch (with k=2) to get 2 segments. Then use the built-in function <i>bwareafilt</i> to extract the largest contour. For both bird and the flower, the largest contour luckily turns out to be the actual foreground. In other cases, we will need manual intervention in this step. The foreground mask is stored in the <i>results/</i> directory for quickly running the code.</li><li>Use Canny Edge detection (built-in MATLAB function) to get the boundary of the foreground.</li><li>Initialise a matrix (Same size as that of image) with all alphas where (i,j) entry denotes the minimum distance of the pixel from the foreground mask. Then iterate over all the boundary pixels. For each boundary pixel, iterate over the radius from 1 to alpha and find all pixels (i,j) such that their distance from current boundary pixel is between r-1 and r. Set matrix(i,j) to min(matrix(i,j), r). Set radius for all pixels in the foreground to 0.</li><li>Now, for disc blurring, iterate over all pixels in the image. If radius = 0 (foreground), do nothing. Otherwise, use the built-in MATLAB function fspecial(r, 'disk') to construct the disc filter and apply it to the current point.</li></ol></div><h2 id="3">Image of a flower</h2><pre>For mean shift:
 Gaussian kernel bandwidth for the spatial feature : 150
 Gaussian kernel bandwidth for the color feature : 60
-Number of Iterations : 30</pre><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <h2 id="4">Variation of r with distance from foreground</h2><img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_05.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_06.png" alt=""> <h2 id="5">Final image after blurring</h2><img vspace="5" hspace="5" src="myMainScript_07.png" alt=""> <h2 id="6">Image of a bird</h2><pre>Image is downsampled by 0.25 due to computational constraints. As a result, alpha = 40*0.25 = 10.
+Number of Iterations : 30</pre><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <h2 id="4">Variation of r with distance from foreground</h2><img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_05.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_06.png" alt=""> <h2 id="15">Final image after blurring</h2><img vspace="5" hspace="5" src="myMainScript_07.png" alt=""> <h2 id="16">Image of a bird</h2><pre>Image is downsampled by 0.25 due to computational constraints. As a result, alpha = 40*0.25 = 10.
 For mean shift:
 Gaussian kernel bandwidth for the spatial feature : 30
 Gaussian kernel bandwidth for the color feature : 40
-Number of Iterations : 30</pre><img vspace="5" hspace="5" src="myMainScript_08.png" alt=""> <h2 id="7">Variation of r with distance from foreground</h2><img vspace="5" hspace="5" src="myMainScript_09.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_10.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_11.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_12.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_13.png" alt=""> <h2 id="8">Final image after blurring</h2><img vspace="5" hspace="5" src="myMainScript_14.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+Number of Iterations : 30</pre><img vspace="5" hspace="5" src="myMainScript_08.png" alt=""> <h2 id="17">Variation of r with distance from foreground</h2><img vspace="5" hspace="5" src="myMainScript_09.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_10.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_11.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_12.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_13.png" alt=""> <h2 id="28">Final image after blurring</h2><img vspace="5" hspace="5" src="myMainScript_14.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Q3: Background blur
 
@@ -85,7 +85,7 @@ Number of Iterations : 30</pre><img vspace="5" hspace="5" src="myMainScript_08.p
 % Then use the built-in function _bwareafilt_ to extract the largest contour. For both
 % bird and the flower, the largest contour luckily turns out to be the
 % actual foreground. In other cases, we will need manual intervention in
-% this step The foreground mask is stored in the _results/_ directory for
+% this step. The foreground mask is stored in the _results/_ directory for
 % quickly running the code. 
 % # Use Canny Edge detection (built-in MATLAB function) to get the boundary
 % of the foreground.
@@ -147,50 +147,60 @@ bd = edge(foreground,'Canny');
 [rows,cols] = find(bd);
 boundary = [cols, rows];
 % find radius map
-% 0.2
+%%
 radiusMask = myRadiusMap(I, boundary, round(alpha*0.2));
 foreground = logical(foreground);
 radiusMask(foreground) = 0;
-figure;
+%%
+subplot(1,1,1), imagesc(radiusMask);
+daspect ([1 1 1]);
 title("0.2*alpha");
-imagesc(radiusMask./max(radiusMask));
-colormap('jet');
+colorbar;
+colormap jet;
 axis off;
-% 0.4
+%%
 radiusMask = myRadiusMap(I, boundary, round(alpha*0.4));
 foreground = logical(foreground);
 radiusMask(foreground) = 0;    
-figure;
+%%
+subplot(1,1,1), imagesc(radiusMask);
+daspect ([1 1 1]);
 title("0.4*alpha");
-imagesc(radiusMask./max(radiusMask));
-colormap('jet');
+colorbar;
+colormap jet;
 axis off;
-% 0.6
+%%
 radiusMask = myRadiusMap(I, boundary, round(alpha*0.6));
 foreground = logical(foreground);
 radiusMask(foreground) = 0;    
-figure;
+%%
+subplot(1,1,1), imagesc(radiusMask);
+daspect ([1 1 1]);
 title("0.6*alpha");
-imagesc(radiusMask./max(radiusMask));
-colormap('jet');
+colorbar;
+colormap jet;
 axis off;
-% 0.8
+%%
 radiusMask = myRadiusMap(I, boundary, round(alpha*0.8));
 foreground = logical(foreground);
 radiusMask(foreground) = 0;    
-figure;
+%%
+subplot(1,1,1), imagesc(radiusMask);
+daspect ([1 1 1]);
 title("0.8*alpha");
-imagesc(radiusMask./max(radiusMask));
-colormap('jet');
+colorbar;
+colormap jet;
 axis off;
-% 1
+%%
 radiusMask = myRadiusMap(I, boundary, alpha);
 foreground = logical(foreground);
 radiusMask(foreground) = 0;
-figure;
+%%
+subplot(1,1,1), imagesc(radiusMask);
+daspect ([1 1 1]);
 title("alpha");
-imagesc(radiusMask./max(radiusMask));
-colormap('jet');
+colorbar;
+colormap jet;
 axis off;
 
 %% Final image after blurring
@@ -202,8 +212,7 @@ imshow(final)
 
 
 %% Image of a bird
-%  Image is downsampled by 0.25 due to computational constraints. As a
-%  result, alpha = 40*0.25 = 10.
+%  Image is downsampled by 0.25 due to computational constraints. As a result, alpha = 40*0.25 = 10.
 %  For mean shift: 
 %  Gaussian kernel bandwidth for the spatial feature : 30
 %  Gaussian kernel bandwidth for the color feature : 40
@@ -244,56 +253,68 @@ title("Only Background");
 subplot(1,4,4)
 imshow(only_f)
 title("Only Foreground");
+
 %% Variation of r with distance from foreground
 bd = edge(foreground,'Canny');
 [rows,cols] = find(bd);
 boundary = [cols, rows];
 % find radius map
-% 0.2
+%%
 radiusMask = myRadiusMap(I, boundary, round(alpha*0.2));
 foreground = logical(foreground);
 radiusMask(foreground) = 0;
-figure;
+%%
+subplot(1,1,1), imagesc(radiusMask);
+daspect ([1 1 1]);
 title("0.2*alpha");
-imagesc(radiusMask./max(radiusMask));
-colormap('jet');
+colorbar;
+colormap jet;
 axis off;
-% 0.4
+%%
 radiusMask = myRadiusMap(I, boundary, round(alpha*0.4));
 foreground = logical(foreground);
 radiusMask(foreground) = 0;    
-figure;
+%%
+subplot(1,1,1), imagesc(radiusMask);
+daspect ([1 1 1]);
 title("0.4*alpha");
-imagesc(radiusMask./max(radiusMask));
-colormap('jet');
+colorbar;
+colormap jet;
 axis off;
-% 0.6
+%%
 radiusMask = myRadiusMap(I, boundary, round(alpha*0.6));
 foreground = logical(foreground);
 radiusMask(foreground) = 0;    
-figure;
+%%
+subplot(1,1,1), imagesc(radiusMask);
+daspect ([1 1 1]);
 title("0.6*alpha");
-imagesc(radiusMask./max(radiusMask));
-colormap('jet');
+colorbar;
+colormap jet;
 axis off;
-% 0.8
+%%
 radiusMask = myRadiusMap(I, boundary, round(alpha*0.8));
 foreground = logical(foreground);
 radiusMask(foreground) = 0;    
-figure;
+%%
+subplot(1,1,1), imagesc(radiusMask);
+daspect ([1 1 1]);
 title("0.8*alpha");
-imagesc(radiusMask./max(radiusMask));
-colormap('jet');
+colorbar;
+colormap jet;
 axis off;
-% 1
+%%
 radiusMask = myRadiusMap(I, boundary, alpha);
 foreground = logical(foreground);
 radiusMask(foreground) = 0;
-figure;
+%%
+subplot(1,1,1), imagesc(radiusMask);
+daspect ([1 1 1]);
 title("alpha");
-imagesc(radiusMask./max(radiusMask));
-colormap('jet');
+colorbar;
+colormap jet;
 axis off;
+
 %% Final image after blurring
 figure;
 % blur

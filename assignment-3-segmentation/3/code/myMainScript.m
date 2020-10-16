@@ -69,50 +69,60 @@ bd = edge(foreground,'Canny');
 [rows,cols] = find(bd);
 boundary = [cols, rows];
 % find radius map
-% 0.2
+%%
 radiusMask = myRadiusMap(I, boundary, round(alpha*0.2));
 foreground = logical(foreground);
 radiusMask(foreground) = 0;
-figure;
+%%
+subplot(1,1,1), imagesc(radiusMask);
+daspect ([1 1 1]);
 title("0.2*alpha");
-imagesc(radiusMask./max(radiusMask));
-colormap('jet');
+colorbar;
+colormap jet;
 axis off;
-% 0.4
+%%
 radiusMask = myRadiusMap(I, boundary, round(alpha*0.4));
 foreground = logical(foreground);
 radiusMask(foreground) = 0;    
-figure;
+%%
+subplot(1,1,1), imagesc(radiusMask);
+daspect ([1 1 1]);
 title("0.4*alpha");
-imagesc(radiusMask./max(radiusMask));
-colormap('jet');
+colorbar;
+colormap jet;
 axis off;
-% 0.6
+%%
 radiusMask = myRadiusMap(I, boundary, round(alpha*0.6));
 foreground = logical(foreground);
 radiusMask(foreground) = 0;    
-figure;
+%%
+subplot(1,1,1), imagesc(radiusMask);
+daspect ([1 1 1]);
 title("0.6*alpha");
-imagesc(radiusMask./max(radiusMask));
-colormap('jet');
+colorbar;
+colormap jet;
 axis off;
-% 0.8
+%%
 radiusMask = myRadiusMap(I, boundary, round(alpha*0.8));
 foreground = logical(foreground);
 radiusMask(foreground) = 0;    
-figure;
+%%
+subplot(1,1,1), imagesc(radiusMask);
+daspect ([1 1 1]);
 title("0.8*alpha");
-imagesc(radiusMask./max(radiusMask));
-colormap('jet');
+colorbar;
+colormap jet;
 axis off;
-% 1
+%%
 radiusMask = myRadiusMap(I, boundary, alpha);
 foreground = logical(foreground);
 radiusMask(foreground) = 0;
-figure;
+%%
+subplot(1,1,1), imagesc(radiusMask);
+daspect ([1 1 1]);
 title("alpha");
-imagesc(radiusMask./max(radiusMask));
-colormap('jet');
+colorbar;
+colormap jet;
 axis off;
 
 %% Final image after blurring
@@ -165,56 +175,68 @@ title("Only Background");
 subplot(1,4,4)
 imshow(only_f)
 title("Only Foreground");
+
 %% Variation of r with distance from foreground
 bd = edge(foreground,'Canny');
 [rows,cols] = find(bd);
 boundary = [cols, rows];
 % find radius map
-% 0.2
+%%
 radiusMask = myRadiusMap(I, boundary, round(alpha*0.2));
 foreground = logical(foreground);
 radiusMask(foreground) = 0;
-figure;
+%%
+subplot(1,1,1), imagesc(radiusMask);
+daspect ([1 1 1]);
 title("0.2*alpha");
-imagesc(radiusMask./max(radiusMask));
-colormap('jet');
+colorbar;
+colormap jet;
 axis off;
-% 0.4
+%%
 radiusMask = myRadiusMap(I, boundary, round(alpha*0.4));
 foreground = logical(foreground);
 radiusMask(foreground) = 0;    
-figure;
+%%
+subplot(1,1,1), imagesc(radiusMask);
+daspect ([1 1 1]);
 title("0.4*alpha");
-imagesc(radiusMask./max(radiusMask));
-colormap('jet');
+colorbar;
+colormap jet;
 axis off;
-% 0.6
+%%
 radiusMask = myRadiusMap(I, boundary, round(alpha*0.6));
 foreground = logical(foreground);
 radiusMask(foreground) = 0;    
-figure;
+%%
+subplot(1,1,1), imagesc(radiusMask);
+daspect ([1 1 1]);
 title("0.6*alpha");
-imagesc(radiusMask./max(radiusMask));
-colormap('jet');
+colorbar;
+colormap jet;
 axis off;
-% 0.8
+%%
 radiusMask = myRadiusMap(I, boundary, round(alpha*0.8));
 foreground = logical(foreground);
 radiusMask(foreground) = 0;    
-figure;
+%%
+subplot(1,1,1), imagesc(radiusMask);
+daspect ([1 1 1]);
 title("0.8*alpha");
-imagesc(radiusMask./max(radiusMask));
-colormap('jet');
+colorbar;
+colormap jet;
 axis off;
-% 1
+%%
 radiusMask = myRadiusMap(I, boundary, alpha);
 foreground = logical(foreground);
 radiusMask(foreground) = 0;
-figure;
+%%
+subplot(1,1,1), imagesc(radiusMask);
+daspect ([1 1 1]);
 title("alpha");
-imagesc(radiusMask./max(radiusMask));
-colormap('jet');
+colorbar;
+colormap jet;
 axis off;
+
 %% Final image after blurring
 figure;
 % blur
