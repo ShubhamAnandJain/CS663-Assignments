@@ -1,14 +1,6 @@
-% References:
-% 1. https://in.mathworks.com/help/matlab/ref/eig.html
-% 2. 
-clear
-clc
-% input matrix
-r = randi([1 100],2,1);
-A = rand(r[, 2);
-% A = eye(3);
-[m, n] = size(A);
+function [sorted_U, sorted_S, sorted_V] = mySVD(A)
 
+[m, n] = size(A);
 % calculating U
 a_at = A*A';
 [U, D1] = eig(a_at);
@@ -30,6 +22,3 @@ if m<n
 else
     sorted_V = sorted_V(:, 1:n);
 end
-% check
-reconstructed = sorted_U*sorted_S*sorted_V';
-A-reconstructed
