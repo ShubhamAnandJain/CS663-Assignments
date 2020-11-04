@@ -38,20 +38,16 @@ trainvecspace = bsxfun(@minus,trainvecspace,meanvec);
 %covmatrix = facevecspace*facevecspace'./(trainnumface*trainnumimg-1);
 [U,S,V] = svd(trainvecspace,'econ');
 %Sred = S(1:kretain,1:kretain);
-Ured = zeros(size(U));
-Ured(:,1:kretain) = U(:,1:kretain);
-searchspace = Ured'*trainvecspace;
-%redrep = U*S*V';
+Ured = zeros()
+Ured = U(:,1:kretain);
 
+%redrep = U*S*V';
+oneimg = U'*(currcolvec-meanvec);
 %facevecspace = U*S*V'.
 % USV' = imspace
 %US = facevecspace;
-%% Search
-%[minValue,closestIndex] = min(abs(bsxfun(@minus,A, V')))
-queryimg = Ured'*(testvecspace(:,9)-meanvec);
-[idx D] = knnsearch(searchspace',queryimg');
-disp(idx)
-disp(D)
+%%
+
 %%
 oneimg = reshape(meanvec, [imgrownum imgcolnum]);
 imshow(uint8(oneimg))
