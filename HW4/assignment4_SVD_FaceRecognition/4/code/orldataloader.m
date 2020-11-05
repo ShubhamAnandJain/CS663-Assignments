@@ -1,4 +1,4 @@
-function [trainvecspace, testvecspace, trainnumimg, testnumimg] = orldataloader()
+function [trainvecspace, testvecspace, trainnumimg, testnumimg, imgrownum, imgcolnum] = orldataloader()
 
 %Directory Location
 orldir = '../../../ORL';
@@ -6,7 +6,7 @@ orldir = '../../../ORL';
 %LOAD TRAINING DATA
 imgrownum = 112;
 imgcolnum = 92;
-trainnumface =32;
+trainnumface =39;
 totimg= 10;
 trainnumimg =6;
 testnumimg= totimg-trainnumimg;

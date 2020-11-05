@@ -32,8 +32,8 @@ tic;
 %         %imshow(img)
 %     end
 % end
-
-[trainvecspace, testvecspace, trainnumimg, testnumimg] = orldataloader();
+clear;
+[trainvecspace, testvecspace, trainnumimg, testnumimg, imgrownum, imgcolnum] = orldataloader();
 meanvec = mean(trainvecspace,2);
 trainvecspace = bsxfun(@minus,trainvecspace,meanvec);
 [U,S,V] = svd(trainvecspace,'econ');
@@ -54,15 +54,17 @@ for k = [1, 2, 3, 5, 10, 15, 20, 30, 50, 75, 100, 150, 170]
     eigenvec = normc(Ured');
     searchspace = eigenvec*trainvecspace;
     toterr=0;
-    dist = 0
+    totdist = 0;
     for i = 1:size(testvecspace,2)
         queryimg = eigenvec*(testvecspace(:,i)-meanvec);
         [idx,Dist] = knnsearch(searchspace',queryimg');
         if floor((idx-1)/trainnumimg) ~= floor((i-1)/(testnumimg))
             toterr = toterr+1;
         end
+        totdist = totdist + Dist;
     end
     disp(toterr)
+    disp(totdist)
 end
 %%
 %redrep = U*S*V';
@@ -72,22 +74,38 @@ end
 %US = facevecspace;
 %% Search
 %[minValue,closestIndex] = min(abs(bsxfun(@minus,A, V')))
-queryimg = eigenvec*(testvecspace(:,9)-meanvec);
-[idx,Dist] = knnsearch(searchspace',queryimg');
-disp(idx)
-disp(Dist)
-%% Calculate error
-toterr=0;
-for i = 1:size(testvecspace,2)
-    queryimg = eigenvec*(testvecspace(:,i)-meanvec);
-    [idx,Dist] = knnsearch(searchspace',queryimg');
-    if floor((idx-1)/trainnumimg) ~= floor((i-1)/(testnumimg))
-        toterr = toterr+1;
-    end
-end
-disp(toterr)
+%queryimg = eigenvec*(testvecspace(:,9)-meanvec);
+%[idx,Dist] = knnsearch(searchspace',queryimg');
+%disp(idx)
+%disp(Dist)
 %%
-oneimg = reshape(meanvec, [imgrownum imgcolnum]);
+clear;
+[trainvecspace, testvecspace, imgrownum, imgcolnum] = yaledataloader();
+meanvec = mean(trainvecspace,2);
+trainvecspace = bsxfun(@minus,trainvecspace,meanvec);
+[U,S,V] = svd(trainvecspace,'econ');
+%%
+bias = 4;
+for k = [1, 2, 3, 5, 10, 15, 20, 30, 50, 60, 65, 75, 100, 200, 300, 500, 1000]
+    Ured = zeros(size(U));
+    Ured(:,bias:bias+k) = U(:,bias:bias+k);
+    eigenvec = normc(Ured');
+    searchspace = eigenvec*trainvecspace;
+    toterr=0;
+    totdist = 0;
+    for i = 1:size(testvecspace,2)
+        queryimg = eigenvec*(testvecspace(:,i)-meanvec);
+        [idx,Dist] = knnsearch(searchspace',queryimg');
+        %if floor((idx-1)/trainnumimg) ~= floor((i-1)/(testnumimg))
+        %    toterr = toterr+1;
+        %end
+        totdist = totdist + Dist;
+    end
+    %disp(toterr)
+    disp(totdist)
+end
+%% To view output
+oneimg = reshape(testvecspace(:,82), [imgrownum imgcolnum]);
 imshow(uint8(oneimg))
 %%
 toc;
