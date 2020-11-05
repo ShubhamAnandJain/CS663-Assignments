@@ -54,17 +54,17 @@ for k = [1, 2, 3, 5, 10, 15, 20, 30, 50, 75, 100, 150, 170]
     eigenvec = normc(Ured');
     searchspace = eigenvec*trainvecspace;
     toterr=0;
-    totdist = 0;
+    %totdist = 0;
     for i = 1:size(testvecspace,2)
         queryimg = eigenvec*(testvecspace(:,i)-meanvec);
         [idx,Dist] = knnsearch(searchspace',queryimg');
         if floor((idx-1)/trainnumimg) ~= floor((i-1)/(testnumimg))
             toterr = toterr+1;
         end
-        totdist = totdist + Dist;
+        %totdist = totdist + Dist;
     end
     disp(toterr)
-    disp(totdist)
+    %disp(totdist)
 end
 %%
 %redrep = U*S*V';
@@ -80,36 +80,58 @@ end
 %disp(Dist)
 %%
 clear;
-[trainvecspace, testvecspace, imgrownum, imgcolnum] = yaledataloader();
+[trainvecspace, testvecspace, imgrownum, imgcolnum, corrtraintag, corrtesttag] = yaledataloader();
 meanvec = mean(trainvecspace,2);
 trainvecspace = bsxfun(@minus,trainvecspace,meanvec);
+testvecspace = bsxfun(@minus,testvecspace,meanvec);
 [U,S,V] = svd(trainvecspace,'econ');
 %%
-bias = 4;
-for k = [1, 2, 3, 5, 10, 15, 20, 30, 50, 60, 65, 75, 100, 200, 300, 500, 1000]
+startk = 4;
+%for k = [1, 2, 3, 5, 10, 15, 20, 30, 50, 60, 65, 75, 100, 200, 300, 500, 1000]
+for k = [1000]
     Ured = zeros(size(U));
-    Ured(:,bias:bias+k) = U(:,bias:bias+k);
+    %Ured(:,1:k) = U(:,1:k);
+    Ured(:,startk:startk+k-1) = U(:,startk:startk+k-1);
     eigenvec = normc(Ured');
     searchspace = eigenvec*trainvecspace;
     toterr=0;
-    totdist = 0;
+    %totdist = 0;
+    
+    queryimgs = eigenvec*testvecspace;
+    [idx, Dist] = knnsearch(searchspace',queryimgs');
+    
     for i = 1:size(testvecspace,2)
-        queryimg = eigenvec*(testvecspace(:,i)-meanvec);
-        [idx,Dist] = knnsearch(searchspace',queryimg');
+        %queryimg = eigenvec*(testvecspace(:,i)-meanvec);
+        %disp(idx(i))
+        %[idx,Dist] = knnsearch(searchspace',queryimg');
+        if corrtesttag(i) ~= corrtraintag(idx(i))
+            toterr=toterr +1;
+        end
+    end
+    disp(toterr)
         %if floor((idx-1)/trainnumimg) ~= floor((i-1)/(testnumimg))
         %    toterr = toterr+1;
         %end
-        totdist = totdist + Dist;
-    end
+        %totdist = totdist + Dist;
+    %end
     %disp(toterr)
-    disp(totdist)
+    %disp(totdist)
 end
 %% To view output
-oneimg = reshape(testvecspace(:,82), [imgrownum imgcolnum]);
+trial = Ured*searchspace*V';
+%%
+oneimg = reshape(trial(:,82), [imgrownum imgcolnum]);
 imshow(uint8(oneimg))
 %%
 toc;
-
+% B18 -63
+% B17 - 63
+% B16 - 62
+% B15 - 63
+% B13 - 60
+% B12 - 60
+% B11 - 60
 %% References
 % https://in.mathworks.com/matlabcentral/answers/166629-is-there-any-way-to-list-all-folders-only-in-the-level-directly-below-a-selected-directory
 % https://in.mathworks.com/matlabcentral/answers/341843-load-files-from-relative-path
+% https://in.mathworks.com/matlabcentral/answers/40018-delete-zeros-rows-and-columns
