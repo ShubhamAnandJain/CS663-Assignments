@@ -47,31 +47,36 @@ xlabel('Number of eigen values retained')
 ylabel('Error rate (Percentage of incorrect identifications)')
 
 %% Error rate (ORL Dataset) using eig function
-% orlplotsvd = [];
-% for k = [1, 2, 3, 5, 10, 15, 20, 30, 50, 75, 100, 150, 170]
-%     Ured = zeros(size(U));
-%     Ured(:,1:k) = U(:,1:k);
-%     eigenvec = Ured';
-%     searchspace = eigenvec*trainvecspace;
-%     toterr=0;
-%     %totdist = 0;
-%     for i = 1:size(testvecspace,2)
-%         queryimg = eigenvec*(testvecspace(:,i)-meanvec);
-%         [idx,Dist] = knnsearch(searchspace',queryimg');
-%         if floor((idx-1)/trainnumimg) ~= floor((i-1)/(testnumimg))
-%             toterr = toterr+1;
-%         end
-%         %totdist = totdist + Dist;
-%     end
-%     orlplotsvd = [orlplotsvd (100*toterr/size(testvecspace,2))];
-%     %disp(toterr/size(testvecspace,2))
-%     %disp(totdist)
-% end
-% X = [1, 2, 3, 5, 10, 15, 20, 30, 50, 75, 100, 150, 170];
-% plot(X,orlplotsvd)
-% title('Error Rate (ORL dataset, matlab inbuilt svd)')
-% xlabel('Number of eigen values retained')
-% ylabel('Error rate (Percentage of incorrect identifications)')
+L = trainvecspace'*trainvecspace;
+[W ,D] = eig(L);
+Uo = trainvecspace*W;
+[singular_vals,idx] = sort(diag(D), 'descend');
+U = Uo(:, idx);
+orlplotsvd = [];
+for k = [1, 2, 3, 5, 10, 15, 20, 30, 50, 75, 100, 150, 170]
+    Ured = zeros(size(U));
+    Ured(:,1:k) = U(:,1:k);
+    eigenvec = Ured';
+    searchspace = eigenvec*trainvecspace;
+    toterr=0;
+    %totdist = 0;
+    for i = 1:size(testvecspace,2)
+        queryimg = eigenvec*(testvecspace(:,i)-meanvec);
+        [idx,Dist] = knnsearch(searchspace',queryimg');
+        if floor((idx-1)/trainnumimg) ~= floor((i-1)/(testnumimg))
+            toterr = toterr+1;
+        end
+        %totdist = totdist + Dist;
+    end
+    orlplotsvd = [orlplotsvd (100*toterr/size(testvecspace,2))];
+    %disp(toterr/size(testvecspace,2))
+    %disp(totdist)
+end
+X = [1, 2, 3, 5, 10, 15, 20, 30, 50, 75, 100, 150, 170];
+plot(X,orlplotsvd)
+title('Error Rate (ORL dataset, eig function)')
+xlabel('Number of eigen values retained')
+ylabel('Error rate (Percentage of incorrect identifications)')
 
 
 %% Yale Dataset Face Recognition
