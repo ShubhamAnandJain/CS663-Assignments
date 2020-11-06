@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">Plot eigen vectors</a></li><li><a href="#4">Reconstruction of Images</a></li></ul></div><h2 id="3">Plot eigen vectors</h2><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <h2 id="4">Reconstruction of Images</h2><p>for k = [2, 10, 20, 30, 50, 75, 100, 125, 150, 170]</p><img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_05.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_06.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_07.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_08.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_09.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_10.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_11.png" alt=""> <pre class="codeoutput">Elapsed time is 4.243275 seconds.
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">Reconstruction of Images</a></li><li><a href="#4">Plot eigen vectors</a></li></ul></div><h2 id="3">Reconstruction of Images</h2><p>for k = [2, 10, 20, 30, 50, 75, 100, 125, 150, 170]</p><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_05.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_06.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_07.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_08.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_09.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_10.png" alt=""> <h2 id="4">Plot eigen vectors</h2><p>The plots below represent normalized eigen vectors generated from the ORL dataset</p><img vspace="5" hspace="5" src="myMainScript_11.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_12.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_13.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_14.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_15.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_16.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_17.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_18.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_19.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_20.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_21.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_22.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_23.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_24.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_25.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_26.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_27.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_28.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_29.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_30.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_31.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_32.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_33.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_34.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_35.png" alt=""> <pre class="codeoutput">Elapsed time is 13.045264 seconds.
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 
@@ -80,16 +80,7 @@ meanvec = mean(trainvecspace,2);
 trainvecspace = bsxfun(@minus,trainvecspace,meanvec);
 [U,S,V] = svd(trainvecspace,'econ');
 
-%% Plot eigen vectors
-array = [];
-for val = 1:25
-    array = [array S(val,val)];
-end
-figure
-plot(array)
-title('Top 25 eigenvalues')
-xlabel('Eigen Value number (descending)')
-ylabel('Eigen Value')
+
 %% Reconstruction of Images
 % for k = [2, 10, 20, 30, 50, 75, 100, 125, 150, 170]
 for k = [2, 10, 20, 30, 50, 75, 100, 125, 150, 170]
@@ -102,6 +93,20 @@ for k = [2, 10, 20, 30, 50, 75, 100, 125, 150, 170]
     imshow(uint8(oneimg))
     var = [];
     var = append(num2str(k),' eigenvalues retained');
+    title(var)
+end
+%% Plot eigen vectors
+% The plots below represent normalized eigen vectors generated from the ORL
+% dataset
+for val = 1:25
+    img = reshape(U(:,val), [imgrownum imgcolnum]);
+    img = rescale(img ,0, 255);
+    img=uint8(img);
+    figure;
+    imshow(img)
+    %subplot(5,5,val), imshow(img)
+    var = [];
+    var = append(num2str(val),'th Eigen Vector');
     title(var)
 end
 %%
