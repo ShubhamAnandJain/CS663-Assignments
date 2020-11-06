@@ -8,27 +8,21 @@
 %% Methodology for detecting known person
 %%
 % # Construct an eigenspace of 32*6 = 192 training images. We should
-% ideally get 32 clusters, with 6 points in each cluster. (Assuming that
-% Eigenspace representation forms one cluster per person)
-% # Compute the centroid of each cluster (we already known which points
-% form a cluster and hence no clustering algorithm is involved).
+% ideally get 32 clusters, with 6 points in each cluster.
+% # Compute the centroid of each cluster.
 % # For each cluster, calculate the distance between the centroid of the
 % cluster and the corresponding 4 test images of each person. Compute the
 % average of this distance. We will get 32 such scalar distance values, one
 % for each cluster/person. Let this 32-dimensional vector be denoted by D.
-% # These values give an estimate of the distance of an unknown image of a
-% known person.
 % # Let threshold = mean(D) + k*standard deviation(D). If k = 0 i.e. use
 % only the mean, the false negative fraction will be close to 0.5 on the 32*4
 % test images. Hence, we add an offset which can be controlled by k.
 % # By increasing k, the threshold increases -> false negatives (FN) decrease
 % but false positives (FP) increase. We empirically found that k = 0.5 strikes
 % the right balance between FP and FN.
-%% Results
 %%
-% * 4 test images each of the first 32 people (Total 128 images) should be
-% classified as known while 10 images of 8 unknown people (Total of 80)
-% should be classified as negatives.
+% * 4*32 = 128 images are the positives while 8*10 = 80 images are
+% negatives
 % * Code from Q4 is used for computing the Eigenspace.
 % * Top 75 eigenvalues are chosen.
 %
