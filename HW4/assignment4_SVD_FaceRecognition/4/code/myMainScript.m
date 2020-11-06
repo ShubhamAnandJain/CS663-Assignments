@@ -16,7 +16,7 @@ clear;
 meanvec = mean(trainvecspace,2);
 trainvecspace = bsxfun(@minus,trainvecspace,meanvec);
 [U,S,V] = svd(trainvecspace,'econ');
-
+%[sortU, sortS, sortV] = mySVD(trainvecspace);
 %% Error Rate (ORL Dataset) with Matlab's svd function
 % Miminum identification errors were observed when top 50 eigen values were
 % retained
@@ -24,7 +24,7 @@ orlplotsvd = [];
 for k = [1, 2, 3, 5, 10, 15, 20, 30, 50, 75, 100, 150, 170]
     Ured = zeros(size(U));
     Ured(:,1:k) = U(:,1:k);
-    eigenvec = normc(Ured');
+    eigenvec = Ured';
     searchspace = eigenvec*trainvecspace;
     toterr=0;
     %totdist = 0;
@@ -46,6 +46,32 @@ title('Error Rate (ORL dataset, matlab inbuilt svd)')
 xlabel('Number of eigen values retained')
 ylabel('Error rate (Percentage of incorrect identifications)')
 
+%% Error rate (ORL Dataset) using eig function
+% orlplotsvd = [];
+% for k = [1, 2, 3, 5, 10, 15, 20, 30, 50, 75, 100, 150, 170]
+%     Ured = zeros(size(U));
+%     Ured(:,1:k) = U(:,1:k);
+%     eigenvec = Ured';
+%     searchspace = eigenvec*trainvecspace;
+%     toterr=0;
+%     %totdist = 0;
+%     for i = 1:size(testvecspace,2)
+%         queryimg = eigenvec*(testvecspace(:,i)-meanvec);
+%         [idx,Dist] = knnsearch(searchspace',queryimg');
+%         if floor((idx-1)/trainnumimg) ~= floor((i-1)/(testnumimg))
+%             toterr = toterr+1;
+%         end
+%         %totdist = totdist + Dist;
+%     end
+%     orlplotsvd = [orlplotsvd (100*toterr/size(testvecspace,2))];
+%     %disp(toterr/size(testvecspace,2))
+%     %disp(totdist)
+% end
+% X = [1, 2, 3, 5, 10, 15, 20, 30, 50, 75, 100, 150, 170];
+% plot(X,orlplotsvd)
+% title('Error Rate (ORL dataset, matlab inbuilt svd)')
+% xlabel('Number of eigen values retained')
+% ylabel('Error rate (Percentage of incorrect identifications)')
 
 
 %% Yale Dataset Face Recognition
@@ -82,7 +108,7 @@ for k = [1, 2, 3, 5, 10, 15, 20, 30, 50, 60, 65, 75, 100, 200, 300, 500, 1000]
     Ured = zeros(size(U));
     %Ured(:,1:k) = U(:,1:k);
     Ured(:,startk:startk+k-1) = U(:,startk:startk+k-1);
-    eigenvec = normc(Ured');
+    eigenvec = Ured';
     searchspace = eigenvec*trainvecspace;
     toterr=0;
     %totdist = 0;
@@ -106,16 +132,16 @@ plot(X,yaleplotsvd)
 title('Error Rate (Yale dataset, all top eigen values retained)')
 xlabel('Number of eigen values retained')
 ylabel('Error rate (Percentage of incorrect identifications)')
-%% Error Rate (Yale Dataset) with top but 3 eigen values
+%% Error Rate (Yale Dataset) with top (but 3) eigen values
 % Performance improves substantially once top eigen values are ignored as
-% can be seen in the plot below, allowing us to hit 45% accuracy.
+% can be seen in the plot below, allowing us to hit 40% accuracy.
 startk = 4;
 yaleplotsvd = [];
 for k = [1, 2, 3, 5, 10, 15, 20, 30, 50, 60, 65, 75, 100, 200, 300, 500, 1000]
     Ured = zeros(size(U));
     %Ured(:,1:k) = U(:,1:k);
     Ured(:,startk:startk+k-1) = U(:,startk:startk+k-1);
-    eigenvec = normc(Ured');
+    eigenvec = Ured';
     searchspace = eigenvec*trainvecspace;
     toterr=0;
     %totdist = 0;
@@ -139,9 +165,12 @@ plot(X,yaleplotsvd)
 title('Error Rate (Yale dataset, top (but 3) eigen values retained)')
 xlabel('Number of eigen values retained')
 ylabel('Error rate (Percentage of incorrect identifications)')
-toc;
+
 
 %% References (last accessed 4-11-2020)
 % https://in.mathworks.com/matlabcentral/answers/166629-is-there-any-way-to-list-all-folders-only-in-the-level-directly-below-a-selected-directory
+%
 % https://in.mathworks.com/matlabcentral/answers/341843-load-files-from-relative-path
+%
 % https://in.mathworks.com/matlabcentral/answers/40018-delete-zeros-rows-and-columns
+toc;
