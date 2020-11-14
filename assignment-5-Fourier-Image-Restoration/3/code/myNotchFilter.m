@@ -1,10 +1,10 @@
 function [filtered] = myNotchFilter(fourier, u, v)
 filtered = fourier;
-w = int16(3);
+w = int16(7);
 total = 2*w+1;
 notch = ones(total,total);
 for i = 1:w
-    notch(1+i:total-1, 1+i:total-1) = 1e-3*notch(1+i:total-1, 1+i:total-1);
+    notch(1+i:total-1, 1+i:total-1) = 1e-2*notch(1+i:total-1, 1+i:total-1);
 end
 
 cx = int16(size(fourier, 1)/2)+1;
