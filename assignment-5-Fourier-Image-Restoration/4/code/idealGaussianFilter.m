@@ -9,7 +9,7 @@ for i = 1:h
     for j = 1:w
         diffx = abs(i - centerx);
         diffy = abs(j - centery);
-        H(i,j) = exp((-diffx^2 - diffy^2) / sigma^2);
+        H(i,j) = exp((-diffx^2 - diffy^2) / (4*sigma^2));
     end
 end
 fft_of_img = fft_of_img .* H;

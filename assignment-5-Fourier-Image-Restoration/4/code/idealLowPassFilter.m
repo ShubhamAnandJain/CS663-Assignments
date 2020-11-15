@@ -7,7 +7,7 @@ centerx = 1 + floor(h / 2);
 centery = 1 + floor(w / 2);
 for i = 1:h
     for j = 1:w
-        if((i - centerx)^2 + (j - centery)^2 <= D*D)
+        if((i - centerx)^2 + (j - centery)^2 <= 4*D*D)
             H(i,j) = 1;
         end
     end

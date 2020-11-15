@@ -26,12 +26,12 @@ tic;
 % same frequency range as D = 40 would imply in [H, W], we should map D to
 % 2D in the [2H, 2W] space. Thus, the filter are of size 512 x 512 (since
 % they are applied on the padded image). This can be imagined as a linear
-% interpolation.
+% interl
 barbara = imread('../data/barbara256.png');
 padding = size(barbara)./2;
 padded_barbara = barbara;
 padded_barbara = padarray(barbara, padding);
-imagesc(barbara);
+imagesc(padded_barbara);
 title('Original Image');
 colorbar;
 daspect ([1 1 1]);
@@ -91,10 +91,7 @@ colormap gray;
 % Not much ringing is observed. There is smoothening of the image and
 % blurring of the edges as in the previous attempt, and you can see some
 % high frequency components in the face region and elsewhere, which were removed in the previous part.
-% Using the same idea as in the previous part, we map D to 2D and pad [H,
-% W] to [2H, 2W]
 [gauss_barbara, H] = idealGaussianFilter(padded_barbara, 40);
-gauss_barbara = gauss_barbara(padding(1)+1:end-padding(1), padding(2)+1:end-padding(2));
 imagesc(gauss_barbara);
 title('Filtered Image, sigma = 40');
 colorbar;
@@ -110,7 +107,6 @@ colormap(myColorScale);
 colormap gray;
 %%
 [gauss_barbara, H] = idealGaussianFilter(padded_barbara, 60);
-gauss_barbara = gauss_barbara(padding(1)+1:end-padding(1), padding(2)+1:end-padding(2));
 imagesc(gauss_barbara);
 title('Filtered Image, sigma = 60');
 colorbar;
@@ -126,7 +122,6 @@ colormap(myColorScale);
 colormap gray;
 %%
 [gauss_barbara, H] = idealGaussianFilter(padded_barbara, 80);
-gauss_barbara = gauss_barbara(padding(1)+1:end-padding(1), padding(2)+1:end-padding(2));
 imagesc(gauss_barbara);
 title('Filtered Image, sigma = 80');
 colorbar;
