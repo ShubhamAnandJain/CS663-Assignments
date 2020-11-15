@@ -42,10 +42,24 @@ daspect ([1 1 1]);
 colormap(myColorScale);
 colormap gray;
 %%
+imagesc(log(abs(H)+1));
+title('Low Pass Filter Frequency plot, D = 40, log scale');
+colorbar;
+daspect ([1 1 1]);
+colormap(myColorScale);
+colormap gray;
+%%
 [low_pass_barbara, H] = idealLowPassFilter(padded_barbara, 60);
 % low_pass_barbara = low_pass_barbara(padding(1)+1:end-padding(1), padding(2)+1:end-padding(2));
 imagesc(low_pass_barbara);
 title('Filtered Image, D = 60');
+colorbar;
+daspect ([1 1 1]);
+colormap(myColorScale);
+colormap gray;
+%%
+imagesc(log(abs(H)+1));
+title('Low Pass Filter Frequency plot, D = 60, log scale');
 colorbar;
 daspect ([1 1 1]);
 colormap(myColorScale);
@@ -80,9 +94,23 @@ daspect ([1 1 1]);
 colormap(myColorScale);
 colormap gray;
 %%
+imagesc(log(abs(H)+1));
+title('Gaussian Filter Frequency plot, sigma = 40, log scale');
+colorbar;
+daspect ([1 1 1]);
+colormap(myColorScale);
+colormap gray;
+%%
 [gauss_barbara, H] = idealGaussianFilter(padded_barbara, 60);
 imagesc(gauss_barbara);
 title('Filtered Image, sigma = 60');
+colorbar;
+daspect ([1 1 1]);
+colormap(myColorScale);
+colormap gray;
+%%
+imagesc(log(abs(H)+1));
+title('Gaussian Filter Frequency plot, sigma = 60, log scale');
 colorbar;
 daspect ([1 1 1]);
 colormap(myColorScale);
