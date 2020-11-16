@@ -5,7 +5,15 @@
 % size 99. Then to calculate N,N point DFT we can calculate N point DFT
 % along rows followed by N point DFT along columns (or vice versa). This
 % can represented in a double summation as follows-
-% $F(x,y) = \frac{1}{\sqrt{201*201}}\sum_{i=-100}^{100}\sum_{j=-100}^{100}f(i,j)exp(-j2\pi(\frac{xi}{201}+\frac{yj}{201}))$
+% $F(x,y) = \sum_{i=-100}^{100}\sum_{j=-100}^{100}f(i,j)exp(-j2\pi(\frac{xi}{201}+\frac{yj}{201}))$
+% 
+% Therefore for k1 the DFT is-
+% 
+% $exp(-j2\pi\frac{y}{201}) + exp(-j2\pi\frac{x}{201}) + exp(-j2\pi\frac{-x}{201}) + exp(-j2\pi\frac{-y}{201}) -4exp(-j2\pi)$
+% 
+% DFT for k2 is -
+% 
+% $-exp(-j2\pi\frac{y}{201}) - exp(-j2\pi\frac{x}{201}) - exp(-j2\pi\frac{-x}{201}) - exp(-j2\pi\frac{-y}{201}) +8exp(-j2\pi) -exp(-j2\pi\frac{x+y}{201})-exp(-j2\pi\frac{x-y}{201}) -exp(-j2\pi\frac{-x+y}{201})-exp(-j2\pi\frac{-x-y}{201})$
 
 %% DFT Calculation Code
 clear;
