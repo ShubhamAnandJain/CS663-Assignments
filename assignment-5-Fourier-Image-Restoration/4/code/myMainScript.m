@@ -25,7 +25,7 @@ tic;
 barbara = imread('../data/barbara256.png');
 padding = size(barbara)./2;
 padded_barbara = barbara;
-% padded_barbara = padarray(barbara, padding);
+padded_barbara = padarray(barbara, padding);
 imagesc(padded_barbara);
 title('Original Image');
 colorbar;

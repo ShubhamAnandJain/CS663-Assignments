@@ -1,11 +1,5 @@
-function [filtered] = myNotchFilter(fourier, u, v)
+function [filtered] = myNotchFilter(fourier, u, v, notch, w)
 filtered = fourier;
-w = int16(7);
-total = 2*w+1;
-notch = ones(total,total);
-for i = 1:w
-    notch(1+i:total-1, 1+i:total-1) = 1e-2*notch(1+i:total-1, 1+i:total-1);
-end
 
 cx = int16(size(fourier, 1)/2)+1;
 cy = int16(size(fourier, 2)/2)+1;
