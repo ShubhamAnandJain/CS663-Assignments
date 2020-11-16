@@ -5,7 +5,7 @@
 % estimate the shift along x axis and y axis when comparing image I and J.
 % We generate phase values at (10,10), (11,10) and (10,11) as per equation 
 % (3) given in the paper " An FFT-based technique for Translation, Rotation 
-% and Scale-Invariant Image rotation.
+% and Scale-Invariant Image rotation".
 %
 % By dividing the complex phase value that we generate for coordinates of
 % the form (x+1,y) by that of (x,y) we calculate the xshift (after
@@ -18,10 +18,10 @@
 clear;
 I = zeros(300,'uint8');
 I(50:100,50:120) = 255;
-imshow(I)
+%imshow(I)
 J = zeros(300,'uint8');
 J(20:70,120:190) = 255;
-imshow(J)
+%imshow(J)
 %If = fftshift(fft2(I));
 If = fft2(I);
 Ifmag = abs(If);
@@ -107,8 +107,8 @@ disp(text)
 % as there are N^2 pixels to compare, and N^2 locations that the image has
 % to be shifted to for each comparison. In contrast this approach takes the
 % order of Nlog(N) operations to generate DFT, followed by matrix
-% multiplications that can take upto order N^2 to generate. Hence it is much faster than pixel wise 
-% comparison.
+% multiplications that can take upto order N^2 to generate. Therefore DFT based approach takes order N^2,
+% making it much faster than pixel wise comparison.
 
 %% Rotation of Images
 % In the case of translation of image we were provided with a simple linear
@@ -122,10 +122,11 @@ disp(text)
 % into a polar representation, where there is a displacement in one
 % coordinate, which is the angle. We can follow exactly the same steps that we have
 % done for calculating shift in x and y coordinates, applied to r (radius)
-% and theta (angle) coordinates.
+% and $\theta$ (angle) coordinates.
 % 
 % $M_{1}(r, \theta) = M_{2}(r, \theta - \theta _{0})$ is identical to
 % solving $F_{1} (x,y) = F_{2}(x-x_{0},y-y_{0})$ for $x_{0} = 0$.
 % 
 % Here we generate $M_{1}$ and $M_{2}$ from input images by first applying
-% DFT to the input images followed by 
+% DFT to the input images which and taking magnitude to remove phase
+% difference corresponding to image translation.

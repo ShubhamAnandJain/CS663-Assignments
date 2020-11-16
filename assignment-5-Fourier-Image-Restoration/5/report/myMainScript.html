@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Q5</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-11-15"><meta name="DC.source" content="myMainScript.m"><style type="text/css">
+      --><title>Q5</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-11-16"><meta name="DC.source" content="myMainScript.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,9 +67,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Q5</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Clean Image</a></li><li><a href="#2">Noisy Image</a></li><li><a href="#3">Complexity of Algorithm</a></li><li><a href="#4">Rotation of Images</a></li></ul></div><h2 id="1">Clean Image</h2><p>We begin this section by creating images I and J as 300x300 size uint8 matrices. After bringing these input images into Fourier Domain we try to estimate the shift along x axis and y axis when comparing image I and J. We generate phase values at (10,10), (11,10) and (10,11) as per equation (3) given in the paper " An FFT-based technique for Translation, Rotation and Scale-Invariant Image rotation.</p><p>By dividing the complex phase value that we generate for coordinates of the form (x+1,y) by that of (x,y) we calculate the xshift (after appropriate scaling). Similarly we use coordinates of the form (x,y+1) and (x,y) to generate the shift in y. We can evaluate this anywhere on the grid but we chose (10,10) for all experiments.</p><p>The Log fourier magnitude transform of the cross power spectrum shows a maxima at 270,70. This corresponds to -30,70 shift values.</p><pre class="codeoutput">Predicted Xshift = -30 Predicted Yshift = 70
+  </style></head><body><div class="content"><h1>Q5</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Clean Image</a></li><li><a href="#2">Noisy Image</a></li><li><a href="#3">Complexity of Algorithm</a></li><li><a href="#4">Rotation of Images</a></li></ul></div><h2 id="1">Clean Image</h2><p>We begin this section by creating images I and J as 300x300 size uint8 matrices. After bringing these input images into Fourier Domain we try to estimate the shift along x axis and y axis when comparing image I and J. We generate phase values at (10,10), (11,10) and (10,11) as per equation (3) given in the paper " An FFT-based technique for Translation, Rotation and Scale-Invariant Image rotation".</p><p>By dividing the complex phase value that we generate for coordinates of the form (x+1,y) by that of (x,y) we calculate the xshift (after appropriate scaling). Similarly we use coordinates of the form (x,y+1) and (x,y) to generate the shift in y. We can evaluate this anywhere on the grid but we chose (10,10) for all experiments.</p><p>The Log fourier magnitude transform of the cross power spectrum shows a maxima at 271,71. This corresponds to -30,70 shift values.</p><pre class="codeoutput">Predicted Xshift = -30 Predicted Yshift = 70
 </pre><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <h2 id="2">Noisy Image</h2><p>In order to display consistent results for report we tested with a fixed random seed set to default (i.e. default seed (0) and algorithm (Mersenne Twister)) All settings for this experiment are the same as the previous part, with the exception of the addition of gaussian noise of zero mean and variance of 20. This leads to inconsistent predictions for shift.</p><p>The effect of this is clearly demonstrated in the Log fourier magnitude transform of the cross power spectrum, where a maxima is visible at -30,70 but this peak is plagued by a a very low SNR.</p><pre class="codeoutput">single coordinate based Predicted Xshift = -29.1532 Predicted Yshift = 48.2141
-</pre><img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <h2 id="3">Complexity of Algorithm</h2><p>For an NxN image, a pixel wise image comparison would take the order of N^4 operations, as there are N^2 pixels to compare, and N^2 locations that the image has to be shifted to for each comparison. In contrast this approach takes the order of Nlog(N) operations to generate DFT, followed by matrix multiplications that can take upto order N^2 to generate. Hence it is much faster than pixel wise comparison.</p><h2 id="4">Rotation of Images</h2><p>In the case of translation of image we were provided with a simple linear equation, where we could fix value of one coordinate and increase value of the other to obtain a unit change. This was used to evaluate x and y translation shifts.</p><p>In the case of a rotated image, we are fortunate to receive similar linear equations, but we first convert the image into its magnitude components removing the effect of translation. Subsequently we convert the image into a polar representation, where there is a displacement in one coordinate, which is the angle. We can follow exactly the same steps that we have done for calculating shift in x and y coordinates, applied to r (radius) and theta (angle) coordinates.</p><p><img src="myMainScript_eq16936483531644201882.png" alt="$M_{1}(r, \theta) = M_{2}(r, \theta - \theta _{0})$"> is identical to solving <img src="myMainScript_eq07826041968569887920.png" alt="$F_{1} (x,y) = F_{2}(x-x_{0},y-y_{0})$"> for <img src="myMainScript_eq02249526273445932828.png" alt="$x_{0} = 0$"></p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <h2 id="3">Complexity of Algorithm</h2><p>For an NxN image, a pixel wise image comparison would take the order of N^4 operations, as there are N^2 pixels to compare, and N^2 locations that the image has to be shifted to for each comparison. In contrast this approach takes the order of Nlog(N) operations to generate DFT, followed by matrix multiplications that can take upto order N^2 to generate. Therefore DFT based approach takes order N^2, making it much faster than pixel wise comparison.</p><h2 id="4">Rotation of Images</h2><p>In the case of translation of image we were provided with a simple linear equation, where we could fix value of one coordinate and increase value of the other to obtain a unit change. This was used to evaluate x and y translation shifts.</p><p>In the case of a rotated image, we are fortunate to receive similar linear equations, but we first convert the image into its magnitude components removing the effect of translation. Subsequently we convert the image into a polar representation, where there is a displacement in one coordinate, which is the angle. We can follow exactly the same steps that we have done for calculating shift in x and y coordinates, applied to r (radius) and <img src="myMainScript_eq08288499342375314727.png" alt="$\theta$" style="width:6px;height:11px;"> (angle) coordinates.</p><p><img src="myMainScript_eq16936483531644201882.png" alt="$M_{1}(r, \theta) = M_{2}(r, \theta - \theta _{0})$" style="width:87px;height:9px;"> is identical to solving <img src="myMainScript_eq07826041968569887920.png" alt="$F_{1} (x,y) = F_{2}(x-x_{0},y-y_{0})$" style="width:103px;height:9px;"> for <img src="myMainScript_eq02249526273445932828.png" alt="$x_{0} = 0$" style="width:23px;height:7px;">.</p><p>Here we generate <img src="myMainScript_eq15881875510505807195.png" alt="$M_{1}$" style="width:18px;height:13px;"> and <img src="myMainScript_eq10443026409667414366.png" alt="$M_{2}$" style="width:19px;height:13px;"> from input images by first applying DFT to the input images which and taking magnitude to remove phase difference corresponding to image translation.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Q5
 %% Clean Image
@@ -78,7 +78,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 % estimate the shift along x axis and y axis when comparing image I and J.
 % We generate phase values at (10,10), (11,10) and (10,11) as per equation 
 % (3) given in the paper " An FFT-based technique for Translation, Rotation 
-% and Scale-Invariant Image rotation.
+% and Scale-Invariant Image rotation".
 %
 % By dividing the complex phase value that we generate for coordinates of
 % the form (x+1,y) by that of (x,y) we calculate the xshift (after
@@ -87,14 +87,14 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 % but we chose (10,10) for all experiments. 
 % 
 % The Log fourier magnitude transform of the cross power spectrum shows a maxima at 
-% 270,70. This corresponds to -30,70 shift values.
+% 271,71. This corresponds to -30,70 shift values.
 clear;
 I = zeros(300,'uint8');
 I(50:100,50:120) = 255;
-imshow(I)
+%imshow(I)
 J = zeros(300,'uint8');
 J(20:70,120:190) = 255;
-imshow(J)
+%imshow(J)
 %If = fftshift(fft2(I));
 If = fft2(I);
 Ifmag = abs(If);
@@ -180,8 +180,8 @@ disp(text)
 % as there are N^2 pixels to compare, and N^2 locations that the image has
 % to be shifted to for each comparison. In contrast this approach takes the
 % order of Nlog(N) operations to generate DFT, followed by matrix
-% multiplications that can take upto order N^2 to generate. Hence it is much faster than pixel wise 
-% comparison.
+% multiplications that can take upto order N^2 to generate. Therefore DFT based approach takes order N^2,
+% making it much faster than pixel wise comparison.
 
 %% Rotation of Images
 % In the case of translation of image we were provided with a simple linear
@@ -195,9 +195,13 @@ disp(text)
 % into a polar representation, where there is a displacement in one
 % coordinate, which is the angle. We can follow exactly the same steps that we have
 % done for calculating shift in x and y coordinates, applied to r (radius)
-% and theta (angle) coordinates.
+% and $\theta$ (angle) coordinates.
 % 
 % $M_{1}(r, \theta) = M_{2}(r, \theta - \theta _{0})$ is identical to
-% solving $F_{1} (x,y) = F_{2}(x-x_{0},y-y_{0})$ for $x_{0} = 0$
+% solving $F_{1} (x,y) = F_{2}(x-x_{0},y-y_{0})$ for $x_{0} = 0$.
+% 
+% Here we generate $M_{1}$ and $M_{2}$ from input images by first applying
+% DFT to the input images which and taking magnitude to remove phase
+% difference corresponding to image translation.
 ##### SOURCE END #####
 --></body></html>
