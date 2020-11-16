@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Q4</a></li><li><a href="#2">a) Ideal Low Pass Filter</a></li><li><a href="#9">b) Gaussian Filter</a></li></ul></div><h2 id="1">Q4</h2><p>References used for this problem:</p><p>1) <a href="https://in.mathworks.com/help/matlab/ref/fftshift.html">https://in.mathworks.com/help/matlab/ref/fftshift.html</a></p><p>2) <a href="https://in.mathworks.com/help/matlab/ref/fft2.html">https://in.mathworks.com/help/matlab/ref/fft2.html</a></p><p>3) <a href="https://in.mathworks.com/help/matlab/ref/ifft2.html">https://in.mathworks.com/help/matlab/ref/ifft2.html</a></p><p>4) <a href="https://in.mathworks.com/help/matlab/ref/ifftshift.html">https://in.mathworks.com/help/matlab/ref/ifftshift.html</a></p><p>5) <a href="https://in.mathworks.com/help/images/ref/padarray.html">https://in.mathworks.com/help/images/ref/padarray.html</a></p><h2 id="2">a) Ideal Low Pass Filter</h2><p>D was taken to be 40, 60, 80</p><p>We observe that, even though high frequency information is removed, the amount of ringing in the image has increased, and thus the image is not very pleasant to look at. Thus, this is clearly undesirable.</p><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_05.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_06.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_07.png" alt=""> <h2 id="9">b) Gaussian Filter</h2><p>Sigma was taken to be 40, 60, 80</p><p>Not much ringing is observed. There is smoothening of the image and blurring of the edges as in the previous attempt, and you can see some high frequency components in the face region and elsewhere, which were removed in the previous part.</p><img vspace="5" hspace="5" src="myMainScript_08.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_09.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_10.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_11.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_12.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_13.png" alt=""> <pre class="codeoutput">Elapsed time is 8.055890 seconds.
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Q4</a></li><li><a href="#2">a) Ideal Low Pass Filter</a></li><li><a href="#9">b) Gaussian Filter</a></li></ul></div><h2 id="1">Q4</h2><p>References used for this problem:</p><p>1) <a href="https://in.mathworks.com/help/matlab/ref/fftshift.html">https://in.mathworks.com/help/matlab/ref/fftshift.html</a></p><p>2) <a href="https://in.mathworks.com/help/matlab/ref/fft2.html">https://in.mathworks.com/help/matlab/ref/fft2.html</a></p><p>3) <a href="https://in.mathworks.com/help/matlab/ref/ifft2.html">https://in.mathworks.com/help/matlab/ref/ifft2.html</a></p><p>4) <a href="https://in.mathworks.com/help/matlab/ref/ifftshift.html">https://in.mathworks.com/help/matlab/ref/ifftshift.html</a></p><p>5) <a href="https://in.mathworks.com/help/images/ref/padarray.html">https://in.mathworks.com/help/images/ref/padarray.html</a></p><h2 id="2">a) Ideal Low Pass Filter</h2><p>D was taken to be 40, 60, 80</p><p>We observe that, even though high frequency information is removed, the amount of ringing in the image has increased, and thus the image is not very pleasant to look at. Thus, this is clearly undesirable. We padded [H, W] to [2H, 2W], as given in the slides. However, to get the same frequency range as D = 40 would imply in [H, W], we should map D to 2D in the [2H, 2W] space. Thus, the filter are of size 512 x 512 (since they are applied on the padded image). This can be imagined as a linear interpolation.</p><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_05.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_06.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_07.png" alt=""> <h2 id="9">b) Gaussian Filter</h2><p>Sigma was taken to be 40, 60, 80</p><p>Not much ringing is observed. There is smoothening of the image and blurring of the edges as in the previous attempt, and you can see some high frequency components in the face region and elsewhere, which were removed in the previous part. Using the same idea as in the previous part, we map D to 2D and pad [H, W] to [2H, 2W]</p><img vspace="5" hspace="5" src="myMainScript_08.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_09.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_10.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_11.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_12.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_13.png" alt=""> <pre class="codeoutput">Elapsed time is 7.985823 seconds.
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Q4
@@ -94,11 +94,16 @@ tic;
 % We observe that, even though high frequency information is removed, the
 % amount of ringing in the image has increased, and thus the image is not
 % very pleasant to look at. Thus, this is clearly undesirable.
+% We padded [H, W] to [2H, 2W], as given in the slides. However, to get the
+% same frequency range as D = 40 would imply in [H, W], we should map D to
+% 2D in the [2H, 2W] space. Thus, the filter are of size 512 x 512 (since
+% they are applied on the padded image). This can be imagined as a linear
+% interpolation.
 barbara = imread('../data/barbara256.png');
 padding = size(barbara)./2;
 padded_barbara = barbara;
-% padded_barbara = padarray(barbara, padding);
-imagesc(padded_barbara);
+padded_barbara = padarray(barbara, padding);
+imagesc(barbara);
 title('Original Image');
 colorbar;
 daspect ([1 1 1]);
@@ -106,7 +111,7 @@ colormap(myColorScale);
 colormap gray;
 %%
 [low_pass_barbara, H] = idealLowPassFilter(padded_barbara, 40);
-% low_pass_barbara = low_pass_barbara(padding(1)+1:end-padding(1), padding(2)+1:end-padding(2));
+low_pass_barbara = low_pass_barbara(padding(1)+1:end-padding(1), padding(2)+1:end-padding(2));
 imagesc(low_pass_barbara);
 title('Filtered Image, D = 40');
 colorbar;
@@ -122,7 +127,7 @@ colormap(myColorScale);
 colormap gray;
 %%
 [low_pass_barbara, H] = idealLowPassFilter(padded_barbara, 60);
-% low_pass_barbara = low_pass_barbara(padding(1)+1:end-padding(1), padding(2)+1:end-padding(2));
+low_pass_barbara = low_pass_barbara(padding(1)+1:end-padding(1), padding(2)+1:end-padding(2));
 imagesc(low_pass_barbara);
 title('Filtered Image, D = 60');
 colorbar;
@@ -138,7 +143,7 @@ colormap(myColorScale);
 colormap gray;
 %%
 [low_pass_barbara, H] = idealLowPassFilter(padded_barbara, 80);
-% low_pass_barbara = low_pass_barbara(padding(1)+1:end-padding(1), padding(2)+1:end-padding(2));
+low_pass_barbara = low_pass_barbara(padding(1)+1:end-padding(1), padding(2)+1:end-padding(2));
 imagesc(low_pass_barbara);
 title('Filtered Image, D = 80');
 colorbar;
@@ -158,7 +163,10 @@ colormap gray;
 % Not much ringing is observed. There is smoothening of the image and
 % blurring of the edges as in the previous attempt, and you can see some
 % high frequency components in the face region and elsewhere, which were removed in the previous part.
+% Using the same idea as in the previous part, we map D to 2D and pad [H,
+% W] to [2H, 2W]
 [gauss_barbara, H] = idealGaussianFilter(padded_barbara, 40);
+gauss_barbara = gauss_barbara(padding(1)+1:end-padding(1), padding(2)+1:end-padding(2));
 imagesc(gauss_barbara);
 title('Filtered Image, sigma = 40');
 colorbar;
@@ -174,6 +182,7 @@ colormap(myColorScale);
 colormap gray;
 %%
 [gauss_barbara, H] = idealGaussianFilter(padded_barbara, 60);
+gauss_barbara = gauss_barbara(padding(1)+1:end-padding(1), padding(2)+1:end-padding(2));
 imagesc(gauss_barbara);
 title('Filtered Image, sigma = 60');
 colorbar;
@@ -189,6 +198,7 @@ colormap(myColorScale);
 colormap gray;
 %%
 [gauss_barbara, H] = idealGaussianFilter(padded_barbara, 80);
+gauss_barbara = gauss_barbara(padding(1)+1:end-padding(1), padding(2)+1:end-padding(2));
 imagesc(gauss_barbara);
 title('Filtered Image, sigma = 80');
 colorbar;
